@@ -132,6 +132,9 @@ mod.sorg <- lmer(emergence ~ sorg.es.rat + (1 | host.gen), data=meta2[meta2$host
 mod.sorg.n <- lmer(emergence ~ (1 | host.gen), data=meta2[meta2$host=="sorghum",])
 anova(mod.sorg, mod.sorg.n) #p=0.03
 
+mod.sorg.enm <- lmer(emergence ~ ENM_a_s50km + (1 | host.gen), data=meta2[meta2$host=="sorghum",])
+anova(mod.sorg.enm, mod.sorg)
+
 # for millet
 mod <- lmer(emergence ~ mill.hc.rat + (1 | host.gen), data=meta2[meta2$host=="millet",])
 mod.n <- lmer(emergence ~ (1 | host.gen), data=meta2[meta2$host=="millet",])
@@ -140,6 +143,10 @@ mod <- lmer(emergence ~ mill.es.rat + (1 | host.gen), data=meta2[meta2$host=="mi
 mod.n <- lmer(emergence ~ (1 | host.gen), data=meta2[meta2$host=="millet",])
 anova(mod, mod.n) #p < 0.0001
 
+mod.mill.enm <- lmer(emergence ~ ENM_a_m50km + (1 | host.gen), data=meta2[meta2$host=="millet",])
+anova(mod.mill.enm, mod)
+
+
 # for maize
 mod <- lmer(emergence ~ maiz.hc.rat + (1 | host.gen), data=meta2[meta2$host=="maize",])
 mod.n <- lmer(emergence ~ (1 | host.gen), data=meta2[meta2$host=="maize",])
@@ -147,3 +154,6 @@ anova(mod, mod.n) #p =0.005
 mod <- lmer(emergence ~ maiz.es.rat + (1 | host.gen), data=meta2[meta2$host=="maize",])
 mod.n <- lmer(emergence ~ (1 | host.gen), data=meta2[meta2$host=="maize",])
 anova(mod, mod.n) #p =0.03
+
+mod.maiz.enm <- lmer(emergence ~ ENM_a_z50km + (1 | host.gen), data=meta2[meta2$host=="maize",])
+anova(mod.maiz.enm, mod)
