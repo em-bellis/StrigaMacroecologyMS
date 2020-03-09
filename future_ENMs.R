@@ -11,7 +11,7 @@ maiz <- raster('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/Fig
 sorg <- raster('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/Fig1/sorg.CLY250.tif')
 mill <- raster('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/Fig1/mill.CLY250.tif')
 
-mods.stack <- stack(all, maiz, sorg, mill)
+mods.stack <- stack(all, maiz, mill,sorg)
 
 mods <- c('all','maiz','mill','sorg')
 rcps <- c('rcp45.','rcp85.')
@@ -34,7 +34,7 @@ for (k in 1:2) {
  		core <- calc(fut.mean, fun=function(x){ x[x < 0.2] <- NA; return(x)} )
  		diff.core <- mask(diff, core)
  	
- 		out.file <- paste(rcps.path[k],rcps[k],mods[j],'.pdf', sep="")
+ 		out.file <- paste("/Users/ebellis/Desktop/Projects/StigaxSorghum/ENMs/future/images",rcps[k],mods[j],'.pdf', sep="")
 
  		pdf(out.file)
  		plot(diff.core, breaks=seq(-1,1,by=0.1),col=coolwarm(n=20), legend=T,  xaxt='n', yaxt='n')
