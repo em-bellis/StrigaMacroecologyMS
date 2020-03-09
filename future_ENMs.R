@@ -13,7 +13,7 @@ mill <- raster('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/Fig
 
 mods <- c('all','maiz','mill','sorg')
 rcps <- c('rcp45.','rcp85.')
-rcps.path <- paste('/Users/ebellis/Desktop/Projects/StigaxSorghum/ENMs/future/',c("rcp45","rcp86"),'/', sep="")
+rcps.path <- paste('/Users/ebellis/Desktop/Projects/StigaxSorghum/ENMs/future/',c("rcp45","rcp85"),'/', sep="")
 
 for (k in 1:2) {
 	for (j in 1:length(mods)) {
@@ -26,7 +26,7 @@ for (k in 1:2) {
  		mpi <- raster(fut[5])
  
  		fut.mean <- mean(stack(acc,ces,cmc,mir,mpi))
- 		diff <- fut.mean - mill
+ 		diff <- fut.mean - mods[j]
  	
  	#mask based on minimum habitat suitability in the future
  		core <- calc(fut.mean, fun=function(x){ x[x < 0.2] <- NA; return(x)} )
