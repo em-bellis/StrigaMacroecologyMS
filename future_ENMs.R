@@ -28,7 +28,7 @@ for (k in 1:2) {
  		mpi <- raster(fut[5])
  
  		fut.mean <- mean(stack(acc,ces,cmc,mir,mpi))
- 		diff <- fut.mean - mods.stack[[2]]
+ 		diff <- fut.mean - mods.stack[[j]]
  	
  	#mask based on minimum habitat suitability in the future
  		core <- calc(fut.mean, fun=function(x){ x[x < 0.2] <- NA; return(x)} )
