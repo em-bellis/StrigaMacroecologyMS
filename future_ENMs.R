@@ -34,7 +34,7 @@ for (k in 1:2) {
  		core <- calc(fut.mean, fun=function(x){ x[x < 0.2] <- NA; return(x)} )
  		diff.core <- mask(diff, core)
  	
- 		out.file <- paste("/Users/ebellis/Desktop/Projects/StigaxSorghum/ENMs/future/images",rcps[k],mods[j],'.pdf', sep="")
+ 		out.file <- paste("/Users/ebellis/Desktop/Projects/StigaxSorghum/ENMs/future/images/",rcps[k],mods[j],'.pdf', sep="")
 
  		pdf(out.file)
  		plot(diff.core, breaks=seq(-1,1,by=0.1),col=coolwarm(n=20), legend=T,  xaxt='n', yaxt='n')
