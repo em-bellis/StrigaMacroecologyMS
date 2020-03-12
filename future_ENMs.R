@@ -37,7 +37,7 @@ for (k in 1:2) {
  		mpi <- raster(fut[5])
  
  		fut.mean <- mean(stack(acc,ces,cmc,mir,mpi))
- 		diff <- fut.mean - mods.stack[[j]]
+ 		#diff <- fut.mean - mods.stack[[j]]
  	
  	#mask based on minimum habitat suitability in the future
  		#core <- calc(fut.mean, fun=function(x){ x[x < 0.2] <- NA; return(x)} )
@@ -60,6 +60,6 @@ for (k in 1:2) {
  	   colnames(tmp.df) <- c("future","current")
  	   
  	   print(paste("For ",rcps[k]," and ", mods[j],"model:"), sep="")
- 	   wilcox.test(tmp.df$future, tmp.df$current, paired = T, conf.int=T)
+ 	   print(wilcox.test(tmp.df$future, tmp.df$current, paired = T, conf.int=T))
 	}
 }
