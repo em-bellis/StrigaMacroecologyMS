@@ -44,7 +44,7 @@ dev.off()
 
 ##part C, maize
 pdf('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/Fig3/C_maiz.pdf')
-plot(avz.core, col=coolwarm(100), breaks=seq(-1,1,by=0.1),legend=T, xaxt='n', yaxt='n')
+plot(avz.core, col=coolwarm(20), breaks=seq(-1,1,by=0.1),legend=T, xaxt='n', yaxt='n')
 map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey50", lwd=0.7)
 scalebar(1000, xy = c(35,-33), type = "line", divs = 1, lonlat = TRUE)
 dev.off()
