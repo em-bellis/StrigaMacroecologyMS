@@ -1,4 +1,4 @@
-#updated 1.30.20
+#updated 3.12.20
 #this script is to make a figure of subtracted ENMs
 
 library(raster)
@@ -23,22 +23,28 @@ avs <- all-sorg
 avm <- all-mill
 avz <- all-maiz
 
+##mask based on habitat suitability of all occurrence model
+core <- calc(all, fun=function(x){ x[x < 0.2] <- NA; return(x)} )
+avs.core <- mask(avs, core)
+avm.core <- mask(avm, core)
+avz.core <- mask(avz, core)
+
 ##part A, mill
 pdf('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/Fig3/A_mill.pdf')
-plot(avm, col=coolwarm(100), legend=T, xaxt='n', yaxt='n')
+plot(avm.core, col=coolwarm(20), breaks=seq(-1,1,by=0.1),legend=T, xaxt='n', yaxt='n')
 map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey50", lwd=0.7)
 dev.off()
 
 ##part B, sorg
 pdf('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/Fig3/B_sorg.pdf')
-plot(avs, col=coolwarm(100), legend=T, xaxt='n', yaxt='n')
+plot(avs.core, col=coolwarm(20), breaks=seq(-1,1,by=0.1),legend=T, xaxt='n', yaxt='n')
 map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey50", lwd=0.7)
 #points(meta.sorg$lat, meta.sorg$lon, col="black",cex=0.6, pch=21)
 dev.off()
 
 ##part C, maize
 pdf('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/Fig3/C_maiz.pdf')
-plot(avz, col=coolwarm(100), legend=T, xaxt='n', yaxt='n')
+plot(avz.core, col=coolwarm(100), breaks=seq(-1,1,by=0.1),legend=T, xaxt='n', yaxt='n')
 map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey50", lwd=0.7)
 scalebar(1000, xy = c(35,-33), type = "line", divs = 1, lonlat = TRUE)
 dev.off()
