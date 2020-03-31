@@ -7,7 +7,8 @@ radius_stats <- function(enm, radius, location) {
 	pol <- polygons(x)
 	masked <- mask(enm, pol)
 	mean.enm <- cellStats(masked, 'mean', na.rm=T)
-	sd.enm <- cellStats(masked, 'sd', na.rm=T)
-	my_list <- list("mean" = mean.enm, "sd" = sd.enm)
+	#sd.enm <- cellStats(masked, 'sd', na.rm=T)
+	#my_list <- list("mean" = mean.enm, "sd" = sd.enm) 
+	my_list <- list("mean" = mean.enm)
 	return(my_list)
 }

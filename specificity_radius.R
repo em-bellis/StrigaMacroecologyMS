@@ -6,7 +6,7 @@ source("radius_function.R")
 
 ###load/clean data points from empirical studies
 SI <- read.csv('SI.dat.1.30.20.csv', header=T)
-SI <- subset(SI, emergence != "NA") %>% select(c('locality','lon','lat','emergence','host','host.gen'))
+SI <- subset(SI, emergence != "NA") %>% dplyr::select(c('locality','lon','lat','emergence','host','host.gen'))
 
 ###load raster layers 
 all <- raster('/Users/emilybellis/Desktop/striga_specificity/sorg_mill_map/all.CLY250.tif')
@@ -33,6 +33,6 @@ for (i in 1:length(radii)) {
 		df.new[df.new$locality==unique(SI$locality)[j],]$ENM_avz <- radius_stats(avz, radii[i],pt)$mean
 		df.new[df.new$locality==unique(SI$locality)[j],]$ENM_avm <- radius_stats(avm, radii[i],pt)$mean
 	}
-	
+		print(df.new)
 		df <- rbind.data.frame(df, df.new)
 }
