@@ -1,0 +1,297 @@
+library(ggplot2)
+ggplot(meta.maize, aes(x=ENM, y=Emg)) + geom_point(pch=21) + theme_classic() + ylab("Mean emergence\n(sorghum)")
+ggplot(meta.sorghum, aes(x=ENM, y=Emg)) + geom_point(pch=21) + theme_classic() + ylab("Mean emergence\n(sorghum)")
+ggplot(meta.sorg, aes(x=ENM, y=Emg)) + geom_point(pch=21) + theme_classic() + ylab("Mean emergence\n(sorghum)")
+ggplot(meta.mill, aes(x=ENM, y=Emg)) + geom_point(pch=21) + theme_classic() + ylab("Mean emergence\n(sorghum)")
+library(raster)#
+library(maptools)#
+data(wrld_simpl)#
+library(raster)#
+library(dplyr)#
+library(rgdal)#
+library(dismo)#
+library(maps)#
+data(worldMapEnv)#
+library(viridis)#
+library(ggplot2)
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_p--ssa/sorg_r_p--SSA.tif')
+plot(sorg)
+enm.sorg<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.sorg.tif')
+enm.sorg.10k <- resample(enm.sorg,sorg, resample='bilinear')
+setExtent(enm.sorg.10k, sorg)
+enm.mill<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.mill.tif')
+pmil <- raster('/Users/emilywork/Downloads/pmil_r_p--ssa/pmil_r_p--SSA.tif')
+enm.mill.10k <- resample(enm.mill,pmil, resample='bilinear') #
+setExtent(enm.mill.10k, pmil)
+tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil)#
+tmp2 <- as.data.frame(tmp, na.rm=TRUE)
+tmp2$sorg_r_p..SSA_category <- factor(tmp2$sorg_r_p..SSA_category,levels=c("none","under 22","22 - 69","69 - 139","139 - 237","237 - 356","356 - 491","491 - 637","637 - 790","790 - 961","961 - 1154","1154 - 1391",    "1391 - 1688",  "1688 - 2062" , "2062 - 2540", "2540 - 3255" , "3255 - 4326","4326 - 6034", "6034 - 10059","over 10059","NA"))
+tmp2$pmil_r_p..SSA_category <- factor(tmp2$pmil_r_p..SSA_category,levels= c("none", "under 20" ,"20 - 71" , "71 - 143"   ,"143 - 226","226 - 320" , "320 - 422" ,  "422 - 534"  , "534 - 656" ,  "656 - 777" ,"777 - 888" ,  "888 - 1002","1002 - 1121" ,"1121 - 1245" ,"1245 - 1382", "1382 - 1601" , "1601 - 2022" , "2022 - 2582" ,  "2582 - 3285" ,"over 3285"  ))
+tmp2$sorg.prod <- as.numeric(tmp2$sorg_r_p..SSA_category)
+tmp2$pmil.prod <- as.numeric(tmp2$pmil_r_p..SSA_category)
+head(tmp)
+length(subset(tmp2, sorg.prod >1))
+nrow(subset(tmp2, sorg.prod >1))
+head(sorg.prod)
+head(tmp2)
+nrow(subset(tmp2, sorg.prod >2))
+nrow(subset(tmp2, pmil.prod >2))
+head(tm2)
+head(tmp2)
+head(tmp2, n-100)
+head(tmp2, n=100)
+nrow(subset(tmp2, pmil.prod >=3))
+nrow(subset(tmp2, pmil.prod >3))
+shgeo <- read.csv('/Users/emilywork/Desktop/ENM/Final_occurrence_data/curated_occ_ESB_7.26.18.csv', header=T,stringsAsFactors=F) ##1116 occurrences
+coordinates(shgeo) <- ~lon+lat
+shgeo <- subset(shgeo, sorghum==1)
+nrow(shgeo)
+point(shgeo$lon, shgeo$lat, pch=21)
+points(shgeo$lon, shgeo$lat, pch=21)
+plot(sorg)
+points(shgeo$lon, shgeo$lat, pch=21, cex=0.5)
+plot(pmil)
+shgeo <- read.csv('/Users/emilywork/Desktop/ENM/Final_occurrence_data/curated_occ_ESB_7.26.18.csv', header=T,stringsAsFactors=F) ##1116 occurrences
+coordinates(shgeo) <- ~lon+lat
+shgeo <- subset(shgeo, millet==1)
+points(shgeo$lon, shgeo$lat, pch=21, cex=0.5)
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_p--ssa/maiz_r_p--SSA.tif')
+p.rat <- pmil/(pmil+sorg+maiz+rice)*100
+p.rat <- pmil/(pmil+sorg+maiz)*100
+head(p.rat)
+tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz, p.rat)
+tmp2 <- as.data.frame(tmp, na.rm=TRUE)
+head(tmp2)
+69-22
+652-503
+575+50+50
+50/675
+plot(pmil)
+shgeo <- read.csv('/Users/emilywork/Desktop/ENM/Final_occurrence_data/curated_occ_ESB_7.26.18.csv', header=T,stringsAsFactors=F) ##1116 occurrences
+coordinates(shgeo) <- ~lon+lat
+shgeo.p <- subset(shgeo, millet==1)
+shgeo.s <- subset(shgeo, sorghum==1)
+points(shgeo.s$lon, shgeo.s$lat, pch=21, cex=0.5)
+tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz)
+tmp2 <- as.data.frame(tmp, na.rm=TRUE)
+tmp2$sorg_r_p..SSA_category <- factor(tmp2$sorg_r_p..SSA_category,levels=c("none","under 22","22 - 69","69 - 139","139 - 237","237 - 356","356 - 491","491 - 637","637 - 790","790 - 961","961 - 1154","1154 - 1391",    "1391 - 1688",  "1688 - 2062" , "2062 - 2540", "2540 - 3255" , "3255 - 4326","4326 - 6034", "6034 - 10059","over 10059","NA"))#
+tmp2$pmil_r_p..SSA_category <- factor(tmp2$pmil_r_p..SSA_category,levels= c("none", "under 20" ,"20 - 71" , "71 - 143"   ,"143 - 226","226 - 320" , "320 - 422" ,  "422 - 534"  , "534 - 656" ,  "656 - 777" ,"777 - 888" ,  "888 - 1002","1002 - 1121" ,"1121 - 1245" ,"1245 - 1382", "1382 - 1601" , "1601 - 2022" , "2022 - 2582" ,  "2582 - 3285" ,"over 3285"  ))
+tmp2$sorg.prod <- as.numeric(tmp2$sorg_r_p..SSA_category)
+tmp2$pmil.prod <- as.numeric(tmp2$pmil_r_p..SSA_category)
+head(tmp2)
+ggplot(tmp2, aes(x=sorg.prod, y=pmil.prod)) + geom_boxplot()
+ggplot(tmp2, aes(x=sorg_r_p..SSA_category, y=pmil.prod)) + geom_boxplot()
+?levels
+ftable(xtabs(~ sorg.prod, data = tmp2))
+ftable(xtabs(~ sorg_r_p..SSA_category, data = tmp2))
+ftable(xtabs(~ sorg_r_p..SSA_category+pmil_r_p..SSA_category, data = tmp2))
+print(levels(maize))
+print(levels(maiz))
+(levels(maiz))
+(levels(pmil))
+(levels(sorg))
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_h--ssa/sorg_r_h--SSA.tif')
+(levels(sorg))
+pmil <- raster('/Users/emilywork/Downloads/pmil_r_p--ssa/pmil_r_h--SSA.tif')
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_h--ssa/sorg_r_p--SSA.tif')
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_p--ssa/sorg_r_p--SSA.tif')
+pmil <- raster('/Users/emilywork/Downloads/pmil_r_h--ssa/pmil_r_h--SSA.tif')
+(levels(pmil))
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_h--ssa/sorg_r_h--SSA.tif')
+(levels(sorg))
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_p--ssa/sorg_r_p--SSA.tif')
+pmil <- raster('/Users/emilywork/Downloads/pmil_r_p--ssa/pmil_r_p--SSA.tif')
+(levels(sorg))
+(levels(pmil))
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_p--ssa/maiz_r_p--SSA.tif')
+(levels(maiz))
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_h--ssa/maiz_r_h--SSA.tif')
+(levels(maiz))
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_h--ssa/sorg_r_h--SSA.tif')
+pmil <- raster('/Users/emilywork/Downloads/pmil_r_h--ssa/pmil_r_h--SSA.tif')
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_h--ssa/maiz_r_h--SSA.tif')
+cbind(levels(maiz),levels(sorg),levels(pmil))
+cbind.data.frame(levels(maiz),levels(sorg),levels(pmil))
+tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz)#
+tmp2 <- as.data.frame(tmp, na.rm=TRUE)
+head(tmp2)
+tmp2
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_p--ssa/sorg_r_p--SSA.tif')  ##the scaling of harvest area is much closer among the three crops compared to production
+pmil <- raster('/Users/emilywork/Downloads/pmil_r_p--ssa/pmil_r_p--SSA.tif')
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_p--ssa/maiz_r_p--SSA.tif')
+tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz)#
+tmp2 <- as.data.frame(tmp, na.rm=TRUE)
+library(polr)
+?polr
+install.packages('polr')
+library(MASS)
+m <- polr(preds.sorg ~ sorg_r_p--SSA, data = tmp2)
+head(tmp2)
+m <- polr(preds.sorg ~ sorg_r_p..SSA_category, data = tmp2)
+tmp2$sorg_r_p..SSA_category <- factor(tmp2$sorg_r_p..SSA_category,levels=c("none","under 22","22 - 69","69 - 139","139 - 237","237 - 356","356 - 491","491 - 637","637 - 790","790 - 961","961 - 1154","1154 - 1391",    "1391 - 1688",  "1688 - 2062" , "2062 - 2540", "2540 - 3255" , "3255 - 4326","4326 - 6034", "6034 - 10059","over 10059","NA"))
+m <- polr(preds.sorg ~ sorg_r_p..SSA_category, data = tmp2)
+m <- polr(sorg_r_p..SSA_category~ preds.sog, data = tmp2)
+m <- polr(sorg_r_p..SSA_category~ preds.sorg, data = tmp2)
+summary(m)
+m2 <- polr(sorg_r_p..SSA_category~ preds.mill, data = tmp2)
+anova(m,m2)
+m.null <- polr(sorg_r_p..SSA_category~ 1, data = tmp2)
+anova(m,m.null)
+anova(m,m.null, test=F)
+anova(m2,m.null, test=F)
+anova(m2,m.null)
+m3 <- polr(sorg_r_p..SSA_category~ preds.mill*preds.sorg, data = tmp2)
+anova(m2,m3)
+anova(m,m3)
+m3 <- polr(sorg_r_p..SSA_category~ preds.mill + preds.sorg, data = tmp2)
+anova(m2,m3)
+anova(m,m3)
+summary(m2)
+m <- polr(pmil_r_p..SSA_category~ preds.sorg, data = tmp2)
+m2 <- polr(sorg_r_p..SSA_category~ preds.sorg, data = tmp2)
+m2 <- polr(pmil_r_p..SSA_category~ preds.sorg, data = tmp2)
+anova(m,m2)
+m2 <- polr(pmil_r_p..SSA_category~ preds.pmil, data = tmp2)
+m2 <- polr(pmil_r_p..SSA_category~ preds.mill, data = tmp2)
+anova(m,m2)
+summary(m)
+summary(m2)
+m2 <- polr(cbind(pmil_r_p..SSA_category,(pmil_r_p..SSA_category+sorg_r_p..SSA_category))~ preds.pmil, data = tmp2)
+m2 <- polr(cbind(pmil_r_p..SSA_category,sorg_r_p..SSA_category))~ preds.pmil, data = tmp2)
+m2 <- polr(cbind(pmil_r_p..SSA_category,sorg_r_p..SSA_category)~ preds.pmil, data = tmp2)
+m2 <- polr(cbind(pmil_r_p..SSA_category,sorg_r_p..SSA_category)~ preds.mill, data = tmp2)
+class(tmp$pmil_r_p..SSA_category)
+class(tmp2$pmil_r_p..SSA_category)
+sorg <- raster('/Users/emilywork/Downloads/sorg_r_h--ssa/sorg_r_h--SSA.tif')  ##the scaling of harvest area is much closer among the three crops compared to production#
+pmil <- raster('/Users/emilywork/Downloads/pmil_r_h--ssa/pmil_r_h--SSA.tif')
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_h--ssa/maiz_r_h--SSA.tif')
+tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz)#
+tmp2 <- as.data.frame(tmp, na.rm=TRUE)
+class(tmp2$pmil_r_p..SSA_category)
+print(levels(tmp2$maiz_r_h--ssa))
+print(levels(tmp2$maiz_r_h..SSA_category))
+tmp2$sorg_r_p..SSA_category <- factor(tmp2$sorg_r_p..SSA_category,levels=c("none","under 22","22 - 69","69 - 139","139 - 237","237 - 356","356 - 491","491 - 637","637 - 790","790 - 961","961 - 1154","1154 - 1391",    "1391 - 1688",  "1688 - 2062" , "2062 - 2540", "2540 - 3255" , "3255 - 4326","4326 - 6034", "6034 - 10059","over 10059","NA"))#
+tmp2$pmil_r_p..SSA_category <- factor(tmp2$pmil_r_p..SSA_category,levels= c("none", "under 20" ,"20 - 71" , "71 - 143"   ,"143 - 226","226 - 320" , "320 - 422" ,  "422 - 534"  , "534 - 656" ,  "656 - 777" ,"777 - 888" ,  "888 - 1002","1002 - 1121" ,"1121 - 1245" ,"1245 - 1382", "1382 - 1601" , "1601 - 2022" , "2022 - 2582" ,  "2582 - 3285" ,"over 3285"  ))
+print(levels(tmp2$sorg_r_h..SSA_category))
+tmp2$sorg_r_h..SSA_category <- factor(tmp2$sorg_r_h..SSA_category,levels=c(   "none"  ,"under 26","26 - 83"  ,   "83 - 159"  ,"159 - 254"  ,"254 - 358" , "358 - 467","467 - 575"  , "575 - 688"  , "688 - 807"  , "807 - 932" ,"932 - 1078"     ,"1078 - 1258" ,"1258 - 1462", "1462 - 1731", "1731 - 2232" ,"2232 - 3104" ,"3104 - 4405", "4405 - 6270"  , "over 6270")
+)
+m2 <- polr(sorg_r_h..SSA_category~ preds.sorg, data = tmp2)
+anova(m2)
+summary(m2)
+print(levels(tmp2$pmil_r_h..SSA_category))
+tmp2$pmil_r_h..SSA_category <- factor(tmp2$pmil_r_h..SSA_category,levels=c( "none"  ,"under 28","28 - 83" , "83 - 151"    ,"151 - 242" ,"242 - 351" ,"351 - 467" ,"467 - 596" ,"596 - 740"  , "740 - 902"  ,"902 - 1093"   ,"1093 - 1322", "1322 - 1637",  "1637 - 2053" ,"2053 - 2550" , "2550 - 3115" ,"3115 - 3787" ,  "3787 - 4790" , "4790 - 6373" , "over 6373"   )
+)
+m3 <- polr(sorg_r_h..SSA_category~ preds.sorg + preds.mill, data = tmp2)
+anova(m2, m3)
+m4 <- polr(sorg_r_h..SSA_category~ preds.sorg * preds.mill, data = tmp2)
+anova(m4, m3)
+summary(m4)
+print(levels(tmp2$maiz_r_h..SSA_category))
+tmp2$maiz_r_h..SSA_category <- factor(tmp2$maiz_r_h..SSA_category,levels=c("none" ,  "under 28" ,"28 - 82"  , "82 - 157"     ,"157 - 246" , "246 - 345" , "345 - 453"  ,"453 - 572","572 - 706"  ,"706 - 845" , "845 - 1000"   ,"1000 - 1201" ,"1201 - 1530", "1530 - 1979",  "1979 - 2646" , "2646 - 3506"  ,  "3506 - 4690" , "4690 - 6400" ,  "6400 - 9939" , "over 9939" ))
+summary(m4)
+head(tmp2)
+install.packages('ordinal')
+library(ordinal)
+?vignette
+vignette(ordinal)
+vignette('clmm2')
+vignette(clmm2)
+vignette(clmm)
+fm1 <- clmm2(sorg_r_h..SSA_category ~ preds.sorg, random=pmil_r_h..SSA_category, data=tmp2)
+warnings()
+summary(fm1)
+fm1 <- clmm2(sorg_r_h..SSA_category ~ preds.sorg, random=pmil_r_h..SSA_category, data=tmp2, Hess=TRUE, nAGQ=10)
+summary(fm1)
+fm1 <- clmm2(sorg_r_h..SSA_category ~ preds.sorg, random=pmil_r_h..SSA_category, data=tmp2, Hess=TRUE)
+summary(fm1)
+fm2 <- clm2(sorg_r_h..SSA_category ~ preds.sorg, data=tmp2, Hess=TRUE)
+anova(fm1, fm2)
+anova(fm1, fm2, test=Chisq)
+enm.all<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.all.tif')
+enm.mill<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.all.tif')
+enm.mill.10k <- resample(enm.mill,pmil, resample='bilinear') #
+setExtent(enm.mill.10k, pmil)
+tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz)#
+tmp2 <- as.data.frame(tmp, na.rm=TRUE)
+tmp2$sorg_r_h..SSA_category <- factor(tmp2$sorg_r_h..SSA_category,levels=c(   "none"  ,"under 26","26 - 83"  ,   "83 - 159"  ,"159 - 254"  ,"254 - 358" , "358 - 467","467 - 575"  , "575 - 688"  , "688 - 807"  , "807 - 932" ,"932 - 1078"     ,"1078 - 1258" ,"1258 - 1462", "1462 - 1731", "1731 - 2232" ,"2232 - 3104" ,"3104 - 4405", "4405 - 6270"  , "over 6270"))#
+tmp2$pmil_r_h..SSA_category <- factor(tmp2$pmil_r_h..SSA_category,levels=c( "none"  ,"under 28","28 - 83" , "83 - 151"    ,"151 - 242" ,"242 - 351" ,"351 - 467" ,"467 - 596" ,"596 - 740"  , "740 - 902"  ,"902 - 1093"   ,"1093 - 1322", "1322 - 1637",  "1637 - 2053" ,"2053 - 2550" , "2550 - 3115" ,"3115 - 3787" ,  "3787 - 4790" , "4790 - 6373" , "over 6373"   ))#
+#####based on production#
+#
+tmp2$maiz_r_h..SSA_category <- factor(tmp2$maiz_r_h..SSA_category,levels=c("none" ,  "under 28" ,"28 - 82"  , "82 - 157"     ,"157 - 246" , "246 - 345" , "345 - 453"  ,"453 - 572","572 - 706"  ,"706 - 845" , "845 - 1000"   ,"1000 - 1201" ,"1201 - 1530", "1530 - 1979",  "1979 - 2646" , "2646 - 3506"  ,  "3506 - 4690" , "4690 - 6400" ,  "6400 - 9939" , "over 9939" ))
+fm1 <- clmm2(sorg_r_h..SSA_category ~ (preds.all-preds.sorg), random=pmil_r_h..SSA_category, data=tmp2, Hess=TRUE)
+fm2 <- clmm2(sorg_r_h..SSA_category ~ (preds.sorg), random=pmil_r_h..SSA_category, data=tmp2, Hess=TRUE)
+summary(fm1)
+summary(fm2)
+fm3 <- clmm2(sorg_r_h..SSA_category ~ (preds.all - preds.sorg), random=pmil_r_h..SSA_category + maiz_r_h..SSA_category, data=tmp2, Hess=TRUE)
+fm3 <- clmm2(sorg_r_h..SSA_category ~ (preds.all - preds.sorg), random=c(pmil_r_h..SSA_category, maiz_r_h..SSA_category), data=tmp2, Hess=TRUE)
+fm3 <- clmm2(sorg_r_h..SSA_category ~ (preds.all - preds.sorg), random=pmil_r_h..SSA_category, maiz_r_h..SSA_category, data=tmp2, Hess=TRUE)
+fm3 <- clmm2(sorg_r_h..SSA_category ~ (preds.all - preds.sorg), random=pmil_r_h..SSA_category, random=maiz_r_h..SSA_category, data=tmp2, Hess=TRUE)
+m4 <- polr(sorg_r_h..SSA_category~ preds.sorg, data = tmp2)
+m3 <- polr(sorg_r_h..SSA_category~ preds.mill, data = tmp2)
+m3 <- polr(sorg_r_h..SSA_category~ preds.all, data = tmp2)
+summary(m3)
+summary(m4)
+enm.all<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.mill.tif')
+enm.sorg<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.sorg.tif')#
+enm.mill<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.mill.tif')#
+enm.all<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.all.tif')
+enm.sorg.10k <- resample(enm.sorg,sorg, resample='bilinear') #
+setExtent(enm.sorg.10k, sorg)#
+enm.mill.10k <- resample(enm.mill,pmil, resample='bilinear') #
+setExtent(enm.mill.10k, pmil)
+enm.all.10k <- resample(enm.all,pmil, resample='bilinear') #
+setExtent(enm.all.10k, pmil)
+tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz, enm.all.10k)
+tmp2 <- as.data.frame(tmp, na.rm=TRUE)
+tmp2$sorg_r_h..SSA_category <- factor(tmp2$sorg_r_h..SSA_category,levels=c(   "none"  ,"under 26","26 - 83"  ,   "83 - 159"  ,"159 - 254"  ,"254 - 358" , "358 - 467","467 - 575"  , "575 - 688"  , "688 - 807"  , "807 - 932" ,"932 - 1078"     ,"1078 - 1258" ,"1258 - 1462", "1462 - 1731", "1731 - 2232" ,"2232 - 3104" ,"3104 - 4405", "4405 - 6270"  , "over 6270"))#
+tmp2$pmil_r_h..SSA_category <- factor(tmp2$pmil_r_h..SSA_category,levels=c( "none"  ,"under 28","28 - 83" , "83 - 151"    ,"151 - 242" ,"242 - 351" ,"351 - 467" ,"467 - 596" ,"596 - 740"  , "740 - 902"  ,"902 - 1093"   ,"1093 - 1322", "1322 - 1637",  "1637 - 2053" ,"2053 - 2550" , "2550 - 3115" ,"3115 - 3787" ,  "3787 - 4790" , "4790 - 6373" , "over 6373"   ))#
+#####based on production#
+#
+tmp2$maiz_r_h..SSA_category <- factor(tmp2$maiz_r_h..SSA_category,levels=c("none" ,  "under 28" ,"28 - 82"  , "82 - 157"     ,"157 - 246" , "246 - 345" , "345 - 453"  ,"453 - 572","572 - 706"  ,"706 - 845" , "845 - 1000"   ,"1000 - 1201" ,"1201 - 1530", "1530 - 1979",  "1979 - 2646" , "2646 - 3506"  ,  "3506 - 4690" , "4690 - 6400" ,  "6400 - 9939" , "over 9939" ))
+m4 <- polr(sorg_r_h..SSA_category~ preds.sorg, data = tmp2)
+m4 <- polr(sorg_r_h..SSA_category~ preds.mill, data = tmp2)
+m3 <- polr(sorg_r_h..SSA_category~ preds.all, data = tmp2)
+m2 <- polr(sorg_r_h..SSA_category~ preds.sorg, data = tmp2)
+anova(m2, m3)
+anova(m2, m3, m4)
+m4 <- polr(pmil_r_h..SSA_category~ preds.mill, data = tmp2)
+m3 <- polr(pmil_r_h..SSA_category~ preds.all, data = tmp2)#
+m2 <- polr(pmil_r_h..SSA_category~ preds.sorg, data = tmp2)#
+anova(m2, m3, m4)
+library(raster)#
+library(maptools)#
+data(wrld_simpl)#
+library(raster)#
+library(dplyr)#
+library(rgdal)#
+library(dismo)#
+library(maps)#
+data(worldMapEnv)#
+library(viridis)
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_p--ssa/maiz_r_p--SSA.tif')
+plot(maiz)
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_h--ssa/maiz_r_p--SSA.tif')
+maiz <- raster('/Users/emilywork/Downloads/maiz_r_h--ssa/maiz_r_h--SSA.tif')
+plot(maiz)
+plot(log(maiz))
+library(dplyr)
+meta <- read.csv('SI.dat.1.30.20.csv')
+tmp <- as.data.frame(meta %>%###
+	select(c(locality,emergence,host,ENM_a_z50km)) %>% group_by(locality, host) %>% summarise(mean = mean(emergence), n = n(), ENM = mean(ENM_a_z50km)))
+meta <- subset(meta, emergence != "NA")
+tmp <- as.data.frame(meta %>%###
+	select(c(locality,emergence,host,ENM_a_z50km)) %>% group_by(locality, host) %>% summarise(mean = mean(emergence), n = n(), ENM = mean(ENM_a_z50km)))
+tmp[order(tmp$emergence)]
+tmp.maize <- subset(tmp, host=="maize")
+tmp.maize[order(tmp.maize$emergence),]
+tmp.maize[order(tmp.maize$emergence)]
+tmp.maize[order(emergence)]
+tmp.maize[order(emergence),]
+tmp.maize
+tmp.maize[order(mean),]
+tmp.maize[order(tmp.maize$mean),]
+tmp.maize[order(tmp.maize$ENM),]
+tmp.millet <- subset(tmp, host=="millet")
+tmp.millet[order(tmp.millet$mean),]
+tmp.millet[order(tmp.millet$ENM),]
+tmp
