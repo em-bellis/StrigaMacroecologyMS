@@ -1,26 +1,3 @@
-head(tm2)
-head(tmp2)
-head(tmp2, n-100)
-head(tmp2, n=100)
-nrow(subset(tmp2, pmil.prod >=3))
-nrow(subset(tmp2, pmil.prod >3))
-shgeo <- read.csv('/Users/emilywork/Desktop/ENM/Final_occurrence_data/curated_occ_ESB_7.26.18.csv', header=T,stringsAsFactors=F) ##1116 occurrences
-coordinates(shgeo) <- ~lon+lat
-shgeo <- subset(shgeo, sorghum==1)
-nrow(shgeo)
-point(shgeo$lon, shgeo$lat, pch=21)
-points(shgeo$lon, shgeo$lat, pch=21)
-plot(sorg)
-points(shgeo$lon, shgeo$lat, pch=21, cex=0.5)
-plot(pmil)
-shgeo <- read.csv('/Users/emilywork/Desktop/ENM/Final_occurrence_data/curated_occ_ESB_7.26.18.csv', header=T,stringsAsFactors=F) ##1116 occurrences
-coordinates(shgeo) <- ~lon+lat
-shgeo <- subset(shgeo, millet==1)
-points(shgeo$lon, shgeo$lat, pch=21, cex=0.5)
-maiz <- raster('/Users/emilywork/Downloads/maiz_r_p--ssa/maiz_r_p--SSA.tif')
-p.rat <- pmil/(pmil+sorg+maiz+rice)*100
-p.rat <- pmil/(pmil+sorg+maiz)*100
-head(p.rat)
 tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz, p.rat)
 tmp2 <- as.data.frame(tmp, na.rm=TRUE)
 head(tmp2)
@@ -319,3 +296,51 @@ SI
 SI <- read.csv('SI.dat.1.30.20.csv', header=T)
 SI
 head(SI)
+library(rgdal)#
+library(dplyr)#
+library(raster)#
+library(dismo)#
+source("radius_function.R")
+SI <- read.csv('SI.dat.1.30.20.csv', header=T)
+SI <- subset(SI, emergence != "NA") %>% dplyr::select(c('locality','lon','lat','emergence','host','host.gen'))
+all <- raster('/Users/emilybellis/Desktop/striga_specificity/sorg_mill_map/all.CLY250.tif')
+all <- raster('/Users/emilywork/Downloads/all.CLY250.tif')
+mill <- raster('/Users/emilywork/Downloads/mill.CLY250.tif')
+sorg <- raster('/Users/emilywork/Downloads/sorg.CLY250.tif')
+maiz <- raster('/Users/emilywork/Downloads/maiz.CLY250.tif')
+avz <- all - maiz#
+avm <- all - mill#
+avs <- all - sorg
+radii <- 50000
+radius_stats
+library(rgdal)#
+library(dplyr)#
+library(raster)#
+library(dismo)#
+source("radius_function.R")
+radius_stats
+library(rgdal)#
+library(dplyr)#
+library(raster)#
+library(dismo)#
+source("radius_function.R")
+radius_stats
+for (i in 1:length(radii)) {#
+	df.new <- cbind(SI, radius=0, ENM_avz = 0, ENM_avm = 0, ENM_avs = 0)#
+	for (j in 1:length(unique(SI$locality))) {#
+		df.new[df.new$locality==unique(SI$locality)[j],]$radius <- radii[i]#
+		pt <- cbind(df.new[df.new$locality==unique(SI$locality)[j],]$lon[1],df.new[df.new$locality==unique(SI$locality)[j],]$lat[1])#
+		df.new[df.new$locality==unique(SI$locality)[j],]$ENM_avs <- radius_stats(avs, radii[i],pt)$sd#
+		df.new[df.new$locality==unique(SI$locality)[j],]$ENM_avz <- radius_stats(avz, radii[i],pt)$sd#
+		df.new[df.new$locality==unique(SI$locality)[j],]$ENM_avm <- radius_stats(avm, radii[i],pt)$sd#
+	}#
+		print(df.new)#
+		df <- rbind.data.frame(df, df.new)#
+}
+df
+df.new
+head(df.new)
+colnames(df.new)[8:10]
+colnames(df.new)[8:10] <- c("ENM_avz_sd" "ENM_avm_sd" "ENM_avs_sd")
+colnames(df.new)[8:10] <- c("ENM_avz_sd", "ENM_avm_sd", "ENM_avs_sd")
+write.table(df.new, file="SI.dat.4.2.20_StdDev.csv", sep=",", row.names=F)
