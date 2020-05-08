@@ -1,397 +1,331 @@
-m4 <- polr(sorg_r_h..SSA_category~ preds.sorg * preds.mill, data = tmp2)
-anova(m4, m3)
-summary(m4)
-print(levels(tmp2$maiz_r_h..SSA_category))
-tmp2$maiz_r_h..SSA_category <- factor(tmp2$maiz_r_h..SSA_category,levels=c("none" ,  "under 28" ,"28 - 82"  , "82 - 157"     ,"157 - 246" , "246 - 345" , "345 - 453"  ,"453 - 572","572 - 706"  ,"706 - 845" , "845 - 1000"   ,"1000 - 1201" ,"1201 - 1530", "1530 - 1979",  "1979 - 2646" , "2646 - 3506"  ,  "3506 - 4690" , "4690 - 6400" ,  "6400 - 9939" , "over 9939" ))
-summary(m4)
-head(tmp2)
-install.packages('ordinal')
-library(ordinal)
-?vignette
-vignette(ordinal)
-vignette('clmm2')
-vignette(clmm2)
-vignette(clmm)
-fm1 <- clmm2(sorg_r_h..SSA_category ~ preds.sorg, random=pmil_r_h..SSA_category, data=tmp2)
-warnings()
-summary(fm1)
-fm1 <- clmm2(sorg_r_h..SSA_category ~ preds.sorg, random=pmil_r_h..SSA_category, data=tmp2, Hess=TRUE, nAGQ=10)
-summary(fm1)
-fm1 <- clmm2(sorg_r_h..SSA_category ~ preds.sorg, random=pmil_r_h..SSA_category, data=tmp2, Hess=TRUE)
-summary(fm1)
-fm2 <- clm2(sorg_r_h..SSA_category ~ preds.sorg, data=tmp2, Hess=TRUE)
-anova(fm1, fm2)
-anova(fm1, fm2, test=Chisq)
-enm.all<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.all.tif')
-enm.mill<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.all.tif')
-enm.mill.10k <- resample(enm.mill,pmil, resample='bilinear') #
-setExtent(enm.mill.10k, pmil)
-tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz)#
-tmp2 <- as.data.frame(tmp, na.rm=TRUE)
-tmp2$sorg_r_h..SSA_category <- factor(tmp2$sorg_r_h..SSA_category,levels=c(   "none"  ,"under 26","26 - 83"  ,   "83 - 159"  ,"159 - 254"  ,"254 - 358" , "358 - 467","467 - 575"  , "575 - 688"  , "688 - 807"  , "807 - 932" ,"932 - 1078"     ,"1078 - 1258" ,"1258 - 1462", "1462 - 1731", "1731 - 2232" ,"2232 - 3104" ,"3104 - 4405", "4405 - 6270"  , "over 6270"))#
-tmp2$pmil_r_h..SSA_category <- factor(tmp2$pmil_r_h..SSA_category,levels=c( "none"  ,"under 28","28 - 83" , "83 - 151"    ,"151 - 242" ,"242 - 351" ,"351 - 467" ,"467 - 596" ,"596 - 740"  , "740 - 902"  ,"902 - 1093"   ,"1093 - 1322", "1322 - 1637",  "1637 - 2053" ,"2053 - 2550" , "2550 - 3115" ,"3115 - 3787" ,  "3787 - 4790" , "4790 - 6373" , "over 6373"   ))#
-#####based on production#
-#
-tmp2$maiz_r_h..SSA_category <- factor(tmp2$maiz_r_h..SSA_category,levels=c("none" ,  "under 28" ,"28 - 82"  , "82 - 157"     ,"157 - 246" , "246 - 345" , "345 - 453"  ,"453 - 572","572 - 706"  ,"706 - 845" , "845 - 1000"   ,"1000 - 1201" ,"1201 - 1530", "1530 - 1979",  "1979 - 2646" , "2646 - 3506"  ,  "3506 - 4690" , "4690 - 6400" ,  "6400 - 9939" , "over 9939" ))
-fm1 <- clmm2(sorg_r_h..SSA_category ~ (preds.all-preds.sorg), random=pmil_r_h..SSA_category, data=tmp2, Hess=TRUE)
-fm2 <- clmm2(sorg_r_h..SSA_category ~ (preds.sorg), random=pmil_r_h..SSA_category, data=tmp2, Hess=TRUE)
-summary(fm1)
-summary(fm2)
-fm3 <- clmm2(sorg_r_h..SSA_category ~ (preds.all - preds.sorg), random=pmil_r_h..SSA_category + maiz_r_h..SSA_category, data=tmp2, Hess=TRUE)
-fm3 <- clmm2(sorg_r_h..SSA_category ~ (preds.all - preds.sorg), random=c(pmil_r_h..SSA_category, maiz_r_h..SSA_category), data=tmp2, Hess=TRUE)
-fm3 <- clmm2(sorg_r_h..SSA_category ~ (preds.all - preds.sorg), random=pmil_r_h..SSA_category, maiz_r_h..SSA_category, data=tmp2, Hess=TRUE)
-fm3 <- clmm2(sorg_r_h..SSA_category ~ (preds.all - preds.sorg), random=pmil_r_h..SSA_category, random=maiz_r_h..SSA_category, data=tmp2, Hess=TRUE)
-m4 <- polr(sorg_r_h..SSA_category~ preds.sorg, data = tmp2)
-m3 <- polr(sorg_r_h..SSA_category~ preds.mill, data = tmp2)
-m3 <- polr(sorg_r_h..SSA_category~ preds.all, data = tmp2)
-summary(m3)
-summary(m4)
-enm.all<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.mill.tif')
-enm.sorg<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.sorg.tif')#
-enm.mill<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.mill.tif')#
-enm.all<- raster('/Users/emilywork/Desktop/ENM/distModel7.30/preds.all.tif')
-enm.sorg.10k <- resample(enm.sorg,sorg, resample='bilinear') #
-setExtent(enm.sorg.10k, sorg)#
-enm.mill.10k <- resample(enm.mill,pmil, resample='bilinear') #
-setExtent(enm.mill.10k, pmil)
-enm.all.10k <- resample(enm.all,pmil, resample='bilinear') #
-setExtent(enm.all.10k, pmil)
-tmp <- stack(enm.sorg.10k, sorg, enm.mill.10k, pmil, maiz, enm.all.10k)
-tmp2 <- as.data.frame(tmp, na.rm=TRUE)
-tmp2$sorg_r_h..SSA_category <- factor(tmp2$sorg_r_h..SSA_category,levels=c(   "none"  ,"under 26","26 - 83"  ,   "83 - 159"  ,"159 - 254"  ,"254 - 358" , "358 - 467","467 - 575"  , "575 - 688"  , "688 - 807"  , "807 - 932" ,"932 - 1078"     ,"1078 - 1258" ,"1258 - 1462", "1462 - 1731", "1731 - 2232" ,"2232 - 3104" ,"3104 - 4405", "4405 - 6270"  , "over 6270"))#
-tmp2$pmil_r_h..SSA_category <- factor(tmp2$pmil_r_h..SSA_category,levels=c( "none"  ,"under 28","28 - 83" , "83 - 151"    ,"151 - 242" ,"242 - 351" ,"351 - 467" ,"467 - 596" ,"596 - 740"  , "740 - 902"  ,"902 - 1093"   ,"1093 - 1322", "1322 - 1637",  "1637 - 2053" ,"2053 - 2550" , "2550 - 3115" ,"3115 - 3787" ,  "3787 - 4790" , "4790 - 6373" , "over 6373"   ))#
-#####based on production#
-#
-tmp2$maiz_r_h..SSA_category <- factor(tmp2$maiz_r_h..SSA_category,levels=c("none" ,  "under 28" ,"28 - 82"  , "82 - 157"     ,"157 - 246" , "246 - 345" , "345 - 453"  ,"453 - 572","572 - 706"  ,"706 - 845" , "845 - 1000"   ,"1000 - 1201" ,"1201 - 1530", "1530 - 1979",  "1979 - 2646" , "2646 - 3506"  ,  "3506 - 4690" , "4690 - 6400" ,  "6400 - 9939" , "over 9939" ))
-m4 <- polr(sorg_r_h..SSA_category~ preds.sorg, data = tmp2)
-m4 <- polr(sorg_r_h..SSA_category~ preds.mill, data = tmp2)
-m3 <- polr(sorg_r_h..SSA_category~ preds.all, data = tmp2)
-m2 <- polr(sorg_r_h..SSA_category~ preds.sorg, data = tmp2)
-anova(m2, m3)
-anova(m2, m3, m4)
-m4 <- polr(pmil_r_h..SSA_category~ preds.mill, data = tmp2)
-m3 <- polr(pmil_r_h..SSA_category~ preds.all, data = tmp2)#
-m2 <- polr(pmil_r_h..SSA_category~ preds.sorg, data = tmp2)#
-anova(m2, m3, m4)
-library(raster)#
-library(maptools)#
-data(wrld_simpl)#
-library(raster)#
-library(dplyr)#
-library(rgdal)#
-library(dismo)#
-library(maps)#
-data(worldMapEnv)#
-library(viridis)
-maiz <- raster('/Users/emilywork/Downloads/maiz_r_p--ssa/maiz_r_p--SSA.tif')
-plot(maiz)
-maiz <- raster('/Users/emilywork/Downloads/maiz_r_h--ssa/maiz_r_p--SSA.tif')
-maiz <- raster('/Users/emilywork/Downloads/maiz_r_h--ssa/maiz_r_h--SSA.tif')
-plot(maiz)
-plot(log(maiz))
-mnhn <- read.csv('Striga_hermonthica_Collections_P_etal_Germinal.csv', header=T)
-getwd()
-setwd("/Users/emilywork/Documents/GitHub/StrigaMacroecologyMS/")
-mnhn <- read.csv('Striga_hermonthica_Collections_P_etal_Germinal.csv', header=T)
-head(mnhn)
-grep('millet',mnhn)
-grep("millet",mnhn)
-grep("Mil",mnhn)
-grep('Mil',mnhn)
-115+18
-1/46
-45/46
-library(raster)#
-library(maptools)#
-data(wrld_simpl)#
-library(raster)#
-library(dplyr)#
-library(rgdal)#
-library(dismo)#
-library(maps)#
-data(worldMapEnv)#
-library(viridis)#
-library(ggplot2)#
-library(tidyr)#
-library(lme4)
-sorg <- raster('/Users/ebellis/Desktop/Projects/StigaxSorghum/MacroecologyMS/EarthStat/sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')
-getwd()
-sorg <- raster('/Users/emilywork/Desktop/EarthStat/sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')
-sorg <- crop(sorg, enm.sorg)
-enm.sorg<- raster('/Users/ebellis/Desktop/Projects/StigaxSorghum/ENMs/sorg.CLY250.tif')
-mill <- raster('/Users/emilywork/Desktop/EarthStat/millet_HarvAreaYield_Geotiff/millet_HarvestedAreaHectares.tif')
-mill <- raster('/Users/emilywork/Desktop/EarthStat/millet_HarvAreaYield_Geotiff/millet_HarvestedAreaHectares.tif')
-plot(mill)
-enm.sorg <- raster('/Users/emilywork/Downloads/sorg.CLY250.tif')
-sorg <- crop(sorg, enm.sorg)
-mill <- crop(mill, enm.sorg)
-maiz <- crop(maiz, enm.sorg)
-maiz <- raster('/Users/emilywork/Desktop/EarthStat/maize_HarvAreaYield_Geotiff/maize_HarvestedAreaHectares.tif')
-maiz <- crop(maiz, enm.sorg)
-plot(mill)
-frac.sorg <- sorg/(sorg+mill+maiz)
-plot(frac.sorg)
-frac.mill <- mill/(sorg+mill+maiz)
-plot(frac.mill)
-frac.maiz <- maiz/(sorg+mill+maiz)
-plot(frac.sorg)
-plot(frac.maiz)
-f.sorg <- sorg/(sorg+mill+maiz)#
-plot(f.sorg)#
-f.mill <- mill/(sorg+mill+maiz)#
-plot(f.mill)#
-f.maiz <- maiz/(sorg+mill+maiz)#
-plot(f.maiz)
-f.sorg <- sorg/(sorg+mill+maiz)
-plot(f.sorg)
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.6] <- NA; return(x)} )
-plot(f.s)
-f.s <- calc(f.sorg, fun=function(x){ x[x > 0.599] <- 1; return(x)} )
-plot(f.s)
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.6] <- NA; return(x)} )
-f.s <- calc(f.s, fun=function(x){ x[x > 0.599] <- 1; return(x)} )
-plot(f.s)
-f.mill <- mill/(sorg+mill+maiz)#
-f.m <- calc(f.mill, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.m <- calc(f.m, fun=function(x){ x[x > 0.599] <- 2; return(x)} )
-plot(f.m)
-f.maiz <- maiz/(sorg+mill+maiz)#
-f.z <- calc(f.maiz, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.z <- calc(f.z, fun=function(x){ x[x > 0.599] <- 3; return(x)} )
-plot(f.z)
-s.m <- cover(f.z, f.s)
-plot(s.m)
-s.m <- cover(f.s, f.z)
-plot(s.m)
-plot(s.m)
-s.m <- cover(f.s, f.z)
-plot(s.m)
-s.m <- cover(f.z, f.s)
-?cover
-s.m <- cover(f.z, f.s)
-?cover
-plot(s.m)
-s.m <- cover(f.m, f.s)
-plot(s.m)
-plot(s.m, col=c("red","green"))
-s.m.z <- cover(s.m, f.z)
-f.sorg <- sorg/(sorg+mill+maiz)#
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.s <- calc(f.s, fun=function(x){ x[x > 0.599] <- "sorghum"; return(x)} )#
-#
-f.mill <- mill/(sorg+mill+maiz)#
-f.m <- calc(f.mill, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.m <- calc(f.m, fun=function(x){ x[x > 0.599] <- "millet"; return(x)} )#
-#
-f.maiz <- maiz/(sorg+mill+maiz)#
-f.z <- calc(f.maiz, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.z <- calc(f.z, fun=function(x){ x[x > 0.599] <- "maize"; return(x)} )#
-#
-s.m <- cover(f.m, f.s)#
-s.m.z <- cover(s.m, f.z)
-f.sorg <- sorg/(sorg+mill+maiz)#
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.s <- calc(f.s, fun=function(x){ x[x > 0.599] <- "1"; return(x)} )#
-#
-f.mill <- mill/(sorg+mill+maiz)#
-f.m <- calc(f.mill, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.m <- calc(f.m, fun=function(x){ x[x > 0.599] <- "2"; return(x)} )#
-#
-f.maiz <- maiz/(sorg+mill+maiz)#
-f.z <- calc(f.maiz, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.z <- calc(f.z, fun=function(x){ x[x > 0.599] <- "3"; return(x)} )
-f.sorg <- sorg/(sorg+mill+maiz)#
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.s <- calc(f.s, fun=function(x){ x[x > 0.599] <- '1'; return(x)} )
-f.sorg <- sorg/(sorg+mill+maiz)#
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.s <- calc(f.s, fun=function(x){ x[x > 0.599] <- 1; return(x)} )#
-#
-f.mill <- mill/(sorg+mill+maiz)#
-f.m <- calc(f.mill, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.m <- calc(f.m, fun=function(x){ x[x > 0.599] <- 2; return(x)} )#
-#
-f.maiz <- maiz/(sorg+mill+maiz)#
-f.z <- calc(f.maiz, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.z <- calc(f.z, fun=function(x){ x[x > 0.599] <- 3; return(x)} )
-plot(s.m.z, col=c("red","blue","yellow"))
-f.sorg <- sorg/(sorg+mill+maiz)#
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.s <- calc(f.s, fun=function(x){ x[x > 0.599] <- 1; return(x)} )#
-#
-f.mill <- mill/(sorg+mill+maiz)#
-f.m <- calc(f.mill, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.m <- calc(f.m, fun=function(x){ x[x > 0.599] <- 2; return(x)} )#
-#
-f.maiz <- maiz/(sorg+mill+maiz)#
-f.z <- calc(f.maiz, fun=function(x){ x[x < 0.6] <- NA; return(x)} )#
-f.z <- calc(f.z, fun=function(x){ x[x > 0.599] <- 3; return(x)} )
-s.m <- cover(f.m, f.s)
-s.m.z <- cover(s.m, f.z)
-plot(s.m.z, col=c("red","blue","yellow"))
-plot(f.m)
-plot(f.s)
-plot(s.m.z, col=c("red","blue","yellow"))
-plot(s.m.z, col=coolwarm(3), breaks=seq(-1,1,by=0.1),legend=T, xaxt='n', yaxt='n')
-library(pals)
-plot(s.m.z, col=coolwarm(3), breaks=seq(-1,1,by=0.1),legend=T, xaxt='n', yaxt='n')
-plot(s.m.z, col=coolwarm(3),legend=T, xaxt='n', yaxt='n')
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey50", lwd=0.7)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey70", lwd=0.7)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey70", lwd=0.9)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey70", lwd=0.9)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=0.9)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-head(meta)
-meta <- read.csv('Fig3/SI.dat.1.30.20.csv')
-meta <- read.csv('SI.dat.1.30.20.csv')
-meta <- subset(meta, emergence != "NA") # 27 localities
-head(meta)
-unique(meta$lon)
-cbind(unique(meta$lon),unique(meta$lat))
-points(cbind(unique(meta$lon),unique(meta$lat)))
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=21)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=2)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=18)
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=18)
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19)
-f.sorg <- sorg/(sorg+mill+maiz)#
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.75] <- NA; return(x)} )#
-f.s <- calc(f.s, fun=function(x){ x[x > 0.749] <- 1; return(x)} )#
-#
-f.mill <- mill/(sorg+mill+maiz)#
-f.m <- calc(f.mill, fun=function(x){ x[x < 0.75] <- NA; return(x)} )#
-f.m <- calc(f.m, fun=function(x){ x[x > 0.749] <- 2; return(x)} )#
-#
-f.maiz <- maiz/(sorg+mill+maiz)#
-f.z <- calc(f.maiz, fun=function(x){ x[x < 0.75] <- NA; return(x)} )#
-f.z <- calc(f.z, fun=function(x){ x[x > 0.749] <- 3; return(x)} )
-s.m <- cover(f.m, f.s)
-s.m.z <- cover(s.m, f.z)
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19, cex=1.2, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19, cex=1.3 col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19, cex=1.3 col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19, cex=1.3 col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19, cex=1.3, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=19)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=21)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=21)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=2)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=2, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=2)
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=2, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=2)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=3)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=4)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=20)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=20)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=2, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=20)
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=24, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=24)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=24, cex=1.4, col="grey", fill="black")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=24, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17)
-f.sorg <- sorg/(sorg+mill+maiz)#
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.8] <- NA; return(x)} )#
-f.s <- calc(f.s, fun=function(x){ x[x > 0.79] <- 1; return(x)} )#
-#
-f.mill <- mill/(sorg+mill+maiz)#
-f.m <- calc(f.mill, fun=function(x){ x[x < 0.8] <- NA; return(x)} )#
-f.m <- calc(f.m, fun=function(x){ x[x > 0.79] <- 2; return(x)} )#
-#
-f.maiz <- maiz/(sorg+mill+maiz)#
-f.z <- calc(f.maiz, fun=function(x){ x[x < 0.8] <- NA; return(x)} )#
-f.z <- calc(f.z, fun=function(x){ x[x > 0.79] <- 3; return(x)} )#
-#
-s.m <- cover(f.m, f.s)#
-s.m.z <- cover(s.m, f.z)#
-#
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')#
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)#
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=1.4, col="grey")#
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17)
-enm.sorg <- raster('/Users/emilywork/Downloads/all.CLY250.tif')
-core <- calc(all, fun=function(x){ x[x < 0.2] <- NA; return(x)} )
-core <- calc(enm.sorg, fun=function(x){ x[x < 0.2] <- NA; return(x)} )
-smz.core <- mask(s.m.z, core)
-plot(s.m.z, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-plot(smz.core, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17)
-smz.core <- mask(s.m.z, core)
+over(pol.50, whost, returnList=TRUE) # Abu Naama
+nrow(over(pol.50, whost, returnList=TRUE))
+length(over(pol.50, whost, returnList=TRUE))
+nrow(over(pol.50, whost, returnList=TRUE))
+over(pol.50, whost)
+over(pol.100, whost)
+over(pol.200, whost)
+point.in.polygon(whost,pol.50)
+whost
+head(whost)
+shgeo <- read.csv('/Users/emilywork/Downloads/pnas.1908707117.sd03.csv', header=T)#
+whost <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
+point.in.polygon(whost$lon, whost$lat,pol.50)
+point.in.polygon(whost$lon, whost$lat,pol.50$lon,pol50$x)
+pol.50
+point.in.polygon(whost$lon, whost$lat,pol.50$long,pol50$x)
+point.in.polygon(whost$lon, whost$lat,pol.50)
+ovr <- over(shost, pol.50)
+ovr <- over(whost, pol.50)
+coordinates(whost) <- ~lon+lat#
+projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
+ovr <- over(whost, pol.50)
+ovr
+over(whost, pol.50, returnList=T)
+i <- which(is.na(ovr))##in ocean
+i
+ovr
+nrow(whost)
+i
+ovr
+i
+ovr
+whost[whost%in%ovr]
+?which
+i <- which(is.na(ovr))##in ocean
+i
+is.na(ovr)
+i <- which(is.na(ovr))##in ocean
+i <- which(is.nona(ovr))##in ocean
+subset(whost, whost !(V1 %in% i))
+subset(whost, whost !(V1 %in% i)))
+rownames(whost)
+row.names(whost)
+subset(whost, whost !(V1 %in% i)))
+subset(whost, !(row.names(whost) %in% i)))
+subset(whost, !(row.names(whost) %in% i))
+whost <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
+subset(whost, !(row.names(whost) %in% i))
+nrow(subset(whost, !(row.names(whost) %in% i)))
+i
+ovr
+nrow(subset(whost, !(row.names(whost) %in% i)))
+subset(whost, !(row.names(whost) %in% i))
+ovr
+subset(whost, (row.names(whost) %in% i))
+nrow(subset(whost, (row.names(whost) %in% i)))
+i
+nrow(subset(whost, (row.names(whost) %in% ovr)))
+nrow(subset(whost, (row.names(whost) %in% which(is.na(ovr))))
+)
+i <- which(is.na(ovr))##in ocean
+i
+length(i)
+nrow(ovr)
+nrow(whost)
+which(is.na(ovr))
+ovr
+ovr
+which(is.na(ovr))
+length(i)
+nrow(whost)
+542-470
+whost$row.name
+whost$row.names
+rownames(whost)
+whost[rownames(whost) %in% i]
+whost[rownames(whost)[1] %in% i]
+whost[rownames(whost)[i] %in% i]
+whost[rownames(whost)[1] %in% i]
+nrow(whost[rownames(whost)[1] %in% i])
+nrow(whost[!rownames(whost)[1] %in% i])
+nrow(whost[!rownames(whost) %in% i])
+rownames(whost)
+paste(rownames(whost))
+paste0(rownames(whost))
+paste0(rownames(whost),sep="")
+as.character(rownames(whost))
+i
+ovr
+i
+whost[whost %in% i]
+?index
+??index
+row(whost)
+whost[row(whost) %in% i]
+whost[row(whost) %in% i,]
+whost[,row(whost) %in% i]
+subset(whost, row(whost) %in% i)
+nrow(subset(whost, row(whost) %in% i))
+nrow(whost)
+nrow(subset(whost, !(row(whost) %in% i)))
+row(whost)
+unique(row(whost))
+row(whost,1)
+row(whost,2)
+row(whost)[1]
+row(whost)[,1]
+nrow(subset(whost, !(row(whost)[,1] %in% i)))
+subset(whost, !(row(whost)[,1] %in% i)))
+subset(whost, !(row(whost)[,1] %in% i))
+shgeo.50km <- subset(whost, !(row(whost)[,1] %in% i))
+shgeo.50km
 sorg <- raster('/Users/emilywork/Desktop/EarthStat/sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')#
-sorg <- crop(sorg, enm.sorg)#
+sorg <- crop(sorg, enm)#
 mill <- raster('/Users/emilywork/Desktop/EarthStat/millet_HarvAreaYield_Geotiff/millet_HarvestedAreaHectares.tif')#
-mill <- crop(mill, enm.sorg)#
+mill <- crop(mill, enm)#
 maiz <- raster('/Users/emilywork/Desktop/EarthStat/maize_HarvAreaYield_Geotiff/maize_HarvestedAreaHectares.tif')#
-maiz <- crop(maiz, enm.sorg)
-meta <- read.csv('SI.dat.1.30.20.csv')#
-meta <- subset(meta, emergence != "NA") # 27 localities#
-#
-################ visualize relative crop area harvested #
-f.sorg <- sorg/(sorg+mill+maiz)#
-f.s <- calc(f.sorg, fun=function(x){ x[x < 0.8] <- NA; return(x)} )#
-f.s <- calc(f.s, fun=function(x){ x[x > 0.79] <- 1; return(x)} )#
-#
-f.mill <- mill/(sorg+mill+maiz)#
-f.m <- calc(f.mill, fun=function(x){ x[x < 0.8] <- NA; return(x)} )#
-f.m <- calc(f.m, fun=function(x){ x[x > 0.79] <- 2; return(x)} )#
-#
-f.maiz <- maiz/(sorg+mill+maiz)#
-f.z <- calc(f.maiz, fun=function(x){ x[x < 0.8] <- NA; return(x)} )#
-f.z <- calc(f.z, fun=function(x){ x[x > 0.79] <- 3; return(x)} )#
-#
-s.m <- cover(f.m, f.s)#
-s.m.z <- cover(s.m, f.z)#
-#
-############### mask based on habitat suitability of all occurrence model #
-core <- calc(enm.sorg, fun=function(x){ x[x < 0.2] <- NA; return(x)} )#
-smz.core <- mask(s.m.z, core)
-s.m.z
-core
-s.m.z <- extent(smz, core)
-s.m.z <- extent(s.m.z, core)
-s.m.z
-?extent
-s.m.z <- crop(s.m.z, core)
-smz.core <- mask(s.m.z, core)
-setextent(s.m.z, core)
-setExtent(s.m.z, core)
-s.m.z <- setExtent(s.m.z, core)
-smz.core <- mask(s.m.z, core)
-core <- setExtent(core, s.m.z)
-smz.core <- mask(s.m.z, core)
-s.m.z
-core
-?resample
-core <- resample(core, s.m.z)
-smz.core <- mask(s.m.z, core)
-plot(smz.core, col=c('#1b9e77','#d95f02','#7570b3'),legend=T, xaxt='n', yaxt='n')
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey10", lwd=1)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=1.4, col="grey")
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17)
+maiz <- crop(maiz, enm)
+map(database="world", xlim=c(-20,60),ylim=c(-40,45),add=T, col="grey40", lwd=0.5, mar=NA)
+map(database="world", xlim=c(-20,60),ylim=c(-40,45), col="grey40", lwd=0.5, mar=NA)
+map(database="world", xlim=c(-20,60),ylim=c(-40,45), col="grey40", lwd=0.5)
+points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=0.4)
+plot(pol.50)
+map(database="world", xlim=c(-20,60),ylim=c(-40,45), col="grey40", lwd=0.5)
+points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=0.4)
+plot(pol.50, add=T)
+points(shgeo.50km$lon, shgeo.50km$lat, pch=2)
+nrow(shgeo)
+nrow(shgeo.50km)
+x.50 <- circles(meta.coords, d=50000, lonlat=T) #sample within radius of 200km
+pol.50 <- polygons(x.50)
+ovr <- over(whost, pol.50)
+i <- which(is.na(ovr))##in ocean
+coordinates(whost) <- ~lon+lat#
+projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
+ovr <- over(whost, pol.50)
+i <- which(is.na(ovr))##in ocean
+whost <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
+shgeo.50km <- subset(whost, !(row(whost)[,1] %in% i))
+nrow(shgeo.50km)
+meta
+meta.coords
+length(meta.coords)
+meta.coords$lat
+i=1
+poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])
+poi.50 <- circles(poi, d=50000, lonlat=T)
+coordinates(whost) <- ~lon+lat#
+projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
+ovr <- over(whost, poi.50)
+coordinates(whost) <- ~lon+lat
+projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
+coordinates(whost) <- ~lon+lat
+ovr <- over(whost, poi.50)
+whost
+ovr <- over(whost, poi.50)
+poi.50
+poi.pol <- polygons(poi.50)
+ovr <- over(whost, poi.50)
+ovr <- over(whost, poi.pol)
+ovr
+i.ovr <- which(is.na(ovr))
+row(shgeo.50km)
+whost.df <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
+subset(whost.df, !(row(whost.df)[,1] %in% i))
+subset(whost.df, !(row(whost.df)[,1] %in% i.ovr))
+whost.df$meta <- NULL
+whost.df
+whost.df$meta <- NA
+whost.df
+subset(whost.df, !(row(whost.df)[,1] %in% i.ovr))
+if(!(row(whost.df)[,1] %in% i.ovr)){whost.df$meta <- meta$locality[i]}
+meta
+meta.coords
+if(!(row(whost.df)[,1] %in% i.ovr)){whost.df$meta <- unique(meta$locality)[i]}
+!(row(whost.df)[,1] %in% i.ovr)
+if(is.na(ovr))
+)
+is.na(ovr)
+subset(is.na(ovr)!="TRUE")
+ovr
+ovr[!is.na(ovr)]
+row(ovr[!is.na(ovr)]
+)
+i.ovr
+if(!(whost.df)[,1] %in% i.ovr)){whost.df$meta <- unique(meta$locality)[i]}
+if(!(whost.df[,1] %in% i.ovr)){whost.df$meta <- unique(meta$locality)[i]}
+whost.df[,1] %in% i.ovr
+whost.df <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
+whost.df$meta <- NA
+nrow(whost)
+nrow(whost.df)
+whost
+whost()
+i.ovr
+row(whost)[]
+row(whost)[,1]
+row(whost)[,1] %in% i.ovr
+!(row(whost)[,1] %in% i.ovr)
+!(row(whost)[,1] %in% i.ovr)
+subset(whost.df, !(row(whost)[,1] %in% i.ovr)
+)
+new.df <- NULL
+new.df <- cbind.data.frame(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr))
+)
+new2.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))
+cbind(new.df, new2.df)
+new.df <- cbind.data.frame(new.df, new2.df)
+head(new2.df)
+colnames(new2.df)
+new.df <- subset(whost.df, Host !="NA")
+new.df
+new.df <- subset(whost.df, meta !="NA")
+new.df
+new.df <- cbind.data.frame(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr))
+)
+new.df
+subset(whost.df, !(row(whost)[,1] %in% i.ovr)
+)
+new.df <- cbind(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr)))
+new.df <- cbind(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr)), check.names=F)
+?cbind.data.frame
+new.df <- subset(whost.df, meta !="NA")
+new.df <- cbind(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr)), check.names=F)
+i
+f(i=1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr)))}
+if(i=1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))}
+if(i==1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))}
+new.df
+for i in length(meta.coords){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	if(i==1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))} #
+	else {new.df <- cbind.data.frame(new.df, whost.df, !(row(whost)[,1] %in% i.ovr))}#
+}
+for i in length(meta.coords){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	if(i==1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))} #
+	else {new.df <- cbind.data.frame(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr)))}#
+}
+for i in length(meta.coords){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	if(i==1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))} #
+	else {new.df <- cbind.data.frame(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr))}#
+}
+for i in length(meta.coords){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	if(i==1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))} #
+	else {new.df <- cbind.data.frame(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr))))}#
+}
+for (i in 1:length(meta.coords)){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	if(i==1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))} #
+	else {new.df <- cbind.data.frame(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr)))}#
+}
+for (i in 1:length(meta.coords)){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	if(i==1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))} #
+	#else {new.df <- cbind.data.frame(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr)))}#
+}
+for (i in 1:length(meta.coords)){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	if(i==1){new.df <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))} #
+	else {new.df <- cbind.data.frame(new.df, subset(whost.df, !(row(whost)[,1] %in% i.ovr)))}#
+}
+for (i in 1:length(meta.coords)){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	print(subset(whost.df, !(row(whost)[,1] %in% i.ovr))) #
+}
+tmp <- subset(whost.df, !(row(whost)[,1] %in% i.ovr))
+tmp
+row(tmp)
+row.name(tmp)
+row.names(tmp)
+subset(whost.df, !(row(whost)[,1] %in% i.ovr))
+subset(whost.df, !(row(whost)[,1] %in% i.ovr))$Host
+subset(whost.df, !(row(whost)[,1] %in% i.ovr))$Host
+table(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$Host)
+table(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$millet)
+subset(whost.df, !(row(whost)[,1] %in% i.ovr))$millet
+sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$millet)
+sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$sorghum)
+sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$maize)
+meta.coords$mill <- NA
+meta.coords$sorg <- NA
+meta.coords$maiz <- NA
+sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$millet)
+for (i in 1:length(meta.coords)){#
+	poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])#
+	poi.50 <- circles(poi, d=50000, lonlat=T)#
+	poi.pol <- polygons(poi.50)#
+	ovr <- over(whost, poi.pol)#
+	i.ovr <- which(is.na(ovr))#
+	meta.coords$mill[i] <- sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$millet) #
+	meta.coords$sorg[i] <- sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$sorghum) #
+	meta.coords$maiz[i] <- sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$maize) #
+}
+meta.coords
+as.data.frame(meta.coords)
+write.table(as.data.frame(meta.coords), file="Occurrences_within_50km.csv", quote=F, sep=",", row.names=F)

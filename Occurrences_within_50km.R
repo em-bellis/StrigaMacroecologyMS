@@ -57,4 +57,6 @@ for (i in 1:length(meta.coords)){
 	meta.coords$sorg[i] <- sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$sorghum) 
 	meta.coords$maiz[i] <- sum(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$maize) 
 }
+
+write.table(as.data.frame(meta.coords), file="Occurrences_within_50km.csv", quote=F, sep=",", row.names=F)
 	
