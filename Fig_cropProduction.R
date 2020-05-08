@@ -73,3 +73,10 @@ map(database="world", xlim=c(-20,60),ylim=c(-40,45),add=T, col="grey40", lwd=0.5
 points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=0.4)
 scalebar(1000, xy = c(40,-35), label=" 1000 km",type = "line", divs = 1, lwd = 2,  adj=c(0.5, -0.5), lonlat = TRUE, cex=0.6)
 dev.off()
+
+############## fig for relative emergence. 
+tmp <- meta %>% select(locality, emergence, host) %>% group_by(locality, host) %>% summarize(emg = mean(emergence), sd = sd(emergence), n=length(emergence))
+tmp2 <- tmp %>% group_by(locality) %>% summarize(total=sum(emg))
+tmp3 <- inner_join(tmp, tmp2)
+
+ggplot(tmp3, aes(x=reorder(locality,-total), y=emg, col=host, fill=host)) + geom_bar(position="stack", stat="identity", alpha=0.4) +theme_minimal()+ scale_colour_manual(values=c('gold2','plum','sienna3')) + scale_fill_manual(values=c('gold2','plum','sienna3'))+ theme(axis.text.x=element_text(angle=90, vjust=0.2, hjust=1)) + ylab("Relative emergence") + xlab("Locality") + geom_errorbar()
