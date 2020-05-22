@@ -1,166 +1,3 @@
-over(pol.50, whost, returnList=TRUE) # Abu Naama
-nrow(over(pol.50, whost, returnList=TRUE))
-length(over(pol.50, whost, returnList=TRUE))
-nrow(over(pol.50, whost, returnList=TRUE))
-over(pol.50, whost)
-over(pol.100, whost)
-over(pol.200, whost)
-point.in.polygon(whost,pol.50)
-whost
-head(whost)
-shgeo <- read.csv('/Users/emilywork/Downloads/pnas.1908707117.sd03.csv', header=T)#
-whost <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
-point.in.polygon(whost$lon, whost$lat,pol.50)
-point.in.polygon(whost$lon, whost$lat,pol.50$lon,pol50$x)
-pol.50
-point.in.polygon(whost$lon, whost$lat,pol.50$long,pol50$x)
-point.in.polygon(whost$lon, whost$lat,pol.50)
-ovr <- over(shost, pol.50)
-ovr <- over(whost, pol.50)
-coordinates(whost) <- ~lon+lat#
-projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
-ovr <- over(whost, pol.50)
-ovr
-over(whost, pol.50, returnList=T)
-i <- which(is.na(ovr))##in ocean
-i
-ovr
-nrow(whost)
-i
-ovr
-i
-ovr
-whost[whost%in%ovr]
-?which
-i <- which(is.na(ovr))##in ocean
-i
-is.na(ovr)
-i <- which(is.na(ovr))##in ocean
-i <- which(is.nona(ovr))##in ocean
-subset(whost, whost !(V1 %in% i))
-subset(whost, whost !(V1 %in% i)))
-rownames(whost)
-row.names(whost)
-subset(whost, whost !(V1 %in% i)))
-subset(whost, !(row.names(whost) %in% i)))
-subset(whost, !(row.names(whost) %in% i))
-whost <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
-subset(whost, !(row.names(whost) %in% i))
-nrow(subset(whost, !(row.names(whost) %in% i)))
-i
-ovr
-nrow(subset(whost, !(row.names(whost) %in% i)))
-subset(whost, !(row.names(whost) %in% i))
-ovr
-subset(whost, (row.names(whost) %in% i))
-nrow(subset(whost, (row.names(whost) %in% i)))
-i
-nrow(subset(whost, (row.names(whost) %in% ovr)))
-nrow(subset(whost, (row.names(whost) %in% which(is.na(ovr))))
-)
-i <- which(is.na(ovr))##in ocean
-i
-length(i)
-nrow(ovr)
-nrow(whost)
-which(is.na(ovr))
-ovr
-ovr
-which(is.na(ovr))
-length(i)
-nrow(whost)
-542-470
-whost$row.name
-whost$row.names
-rownames(whost)
-whost[rownames(whost) %in% i]
-whost[rownames(whost)[1] %in% i]
-whost[rownames(whost)[i] %in% i]
-whost[rownames(whost)[1] %in% i]
-nrow(whost[rownames(whost)[1] %in% i])
-nrow(whost[!rownames(whost)[1] %in% i])
-nrow(whost[!rownames(whost) %in% i])
-rownames(whost)
-paste(rownames(whost))
-paste0(rownames(whost))
-paste0(rownames(whost),sep="")
-as.character(rownames(whost))
-i
-ovr
-i
-whost[whost %in% i]
-?index
-??index
-row(whost)
-whost[row(whost) %in% i]
-whost[row(whost) %in% i,]
-whost[,row(whost) %in% i]
-subset(whost, row(whost) %in% i)
-nrow(subset(whost, row(whost) %in% i))
-nrow(whost)
-nrow(subset(whost, !(row(whost) %in% i)))
-row(whost)
-unique(row(whost))
-row(whost,1)
-row(whost,2)
-row(whost)[1]
-row(whost)[,1]
-nrow(subset(whost, !(row(whost)[,1] %in% i)))
-subset(whost, !(row(whost)[,1] %in% i)))
-subset(whost, !(row(whost)[,1] %in% i))
-shgeo.50km <- subset(whost, !(row(whost)[,1] %in% i))
-shgeo.50km
-sorg <- raster('/Users/emilywork/Desktop/EarthStat/sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')#
-sorg <- crop(sorg, enm)#
-mill <- raster('/Users/emilywork/Desktop/EarthStat/millet_HarvAreaYield_Geotiff/millet_HarvestedAreaHectares.tif')#
-mill <- crop(mill, enm)#
-maiz <- raster('/Users/emilywork/Desktop/EarthStat/maize_HarvAreaYield_Geotiff/maize_HarvestedAreaHectares.tif')#
-maiz <- crop(maiz, enm)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),add=T, col="grey40", lwd=0.5, mar=NA)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45), col="grey40", lwd=0.5, mar=NA)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45), col="grey40", lwd=0.5)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=0.4)
-plot(pol.50)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45), col="grey40", lwd=0.5)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=0.4)
-plot(pol.50, add=T)
-points(shgeo.50km$lon, shgeo.50km$lat, pch=2)
-nrow(shgeo)
-nrow(shgeo.50km)
-x.50 <- circles(meta.coords, d=50000, lonlat=T) #sample within radius of 200km
-pol.50 <- polygons(x.50)
-ovr <- over(whost, pol.50)
-i <- which(is.na(ovr))##in ocean
-coordinates(whost) <- ~lon+lat#
-projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
-ovr <- over(whost, pol.50)
-i <- which(is.na(ovr))##in ocean
-whost <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
-shgeo.50km <- subset(whost, !(row(whost)[,1] %in% i))
-nrow(shgeo.50km)
-meta
-meta.coords
-length(meta.coords)
-meta.coords$lat
-i=1
-poi <- cbind.data.frame(meta.coords$lon[i],meta.coords$lat[i])
-poi.50 <- circles(poi, d=50000, lonlat=T)
-coordinates(whost) <- ~lon+lat#
-projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
-ovr <- over(whost, poi.50)
-coordinates(whost) <- ~lon+lat
-projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
-coordinates(whost) <- ~lon+lat
-ovr <- over(whost, poi.50)
-whost
-ovr <- over(whost, poi.50)
-poi.50
-poi.pol <- polygons(poi.50)
-ovr <- over(whost, poi.50)
-ovr <- over(whost, poi.pol)
-ovr
-i.ovr <- which(is.na(ovr))
-row(shgeo.50km)
 whost.df <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
 subset(whost.df, !(row(whost.df)[,1] %in% i))
 subset(whost.df, !(row(whost.df)[,1] %in% i.ovr))
@@ -196,7 +33,6 @@ i.ovr
 row(whost)[]
 row(whost)[,1]
 row(whost)[,1] %in% i.ovr
-!(row(whost)[,1] %in% i.ovr)
 !(row(whost)[,1] %in% i.ovr)
 subset(whost.df, !(row(whost)[,1] %in% i.ovr)
 )
@@ -305,7 +141,6 @@ row.name(tmp)
 row.names(tmp)
 subset(whost.df, !(row(whost)[,1] %in% i.ovr))
 subset(whost.df, !(row(whost)[,1] %in% i.ovr))$Host
-subset(whost.df, !(row(whost)[,1] %in% i.ovr))$Host
 table(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$Host)
 table(subset(whost.df, !(row(whost)[,1] %in% i.ovr))$millet)
 subset(whost.df, !(row(whost)[,1] %in% i.ovr))$millet
@@ -329,3 +164,180 @@ for (i in 1:length(meta.coords)){#
 meta.coords
 as.data.frame(meta.coords)
 write.table(as.data.frame(meta.coords), file="Occurrences_within_50km.csv", quote=F, sep=",", row.names=F)
+library(ggplot2)
+library(ggplot2)
+df <- read.csv('SI.dat.3.32.20.csv', header=T)
+getwd()
+df <- read.csv('SI.dat.3.31.20.csv', header=T)
+head(df)
+melt(df)
+library(tidyr)
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% pivot_wider(df, id_cols=c(locality,radius), values_from=c(ENM_avs,ENM_avz,ENM_avm))
+library(dplyr)
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% pivot_wider(df, id_cols=c(locality,radius), values_from=c(ENM_avs,ENM_avz,ENM_avm))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% pivot_wider(id_cols=c(locality,radius), values_from=c(ENM_avs,ENM_avz,ENM_avm))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% pivot_wider(id_cols=c(locality,radius), values_from=c(ENM_avs,ENM_avz,ENM_avm))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% pivot_wider(id_cols=c(locality,radius), values_from=c(ENM_avs,ENM_avz,ENM_avm))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius)
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% pivot_wider(id_cols=c(locality,radius), values_from=c(ENM_avs,ENM_avz,ENM_avm),names_from=c(locality,radius))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% pivot_wider(id_cols=c(locality,radius), values_from=c(ENM_avs,ENM_avz,ENM_avm),names_from=c(locality,radius))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% pivot_wider(id_cols=c(locality,radius), values_from=c(ENM_avs,ENM_avz,ENM_avm))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% pivot_wider(id_cols=c(locality,radius), names_from=c(locality,radius))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique()
+library(reshape2)
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% melt()
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% melt(key=c(locality,radius))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% melt(value=c(ENM_avz, ENM_avm, ENM_avs))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_wider(id_cols=c(locality,radius), names_from=c(locality,radius))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_wider(id_cols=c(locality,radius), values_from=c(ENM_avz, ENM_avm, ENM_avs))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius)
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% melt()
+?melt
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% melt(value.name=c(ENM_avz, ENM_avm, ENM_avs))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% melt(value=c(ENM_avz, ENM_avm, ENM_avs))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(values_from==c(ENM_avz, ENM_avm, ENM_avs))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(values_from=c(ENM_avz, ENM_avm, ENM_avs))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(c(locality,radius),values_from=c(ENM_avz, ENM_avm, ENM_avs))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius)
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer((ENM_avz, ENM_avm, ENM_avs))
+df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(c(ENM_avz, ENM_avm, ENM_avs))
+df <- df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(c(ENM_avz, ENM_avm, ENM_avs))
+ggplot(df, aes(x=radius, y=value)) + geom_line()
+ggplot(df, aes(x=radius, y=value)) + geom_line() + facet_grid(name)
+df <- as.data.frame(df)
+ggplot(df, aes(x=radius, y=value)) + geom_line() + facet_grid(name)
+head(df)
+ggplot(df, aes(x=radius, y=value)) + geom_line() + facet_grid(~.name)
+colnames(df)[3] <- "ENM"
+ggplot(df, aes(x=radius, y=value)) + geom_line() + facet_grid(.~ENM)
+ggplot(df, aes(x=radius, y=value, group=locality)) + geom_line() + facet_grid(.~ENM)
+ggplot(df, aes(x=radius, y=value, group=locality)) + geom_line(lwd=3) + facet_grid(.~ENM)
+ggplot(df, aes(x=radius, y=value, group=locality)) + geom_line(lwd=0.5) + facet_grid(.~ENM)
+ggplot(df, aes(x=radius/1000, y=value, group=locality)) + geom_line(lwd=0.5) + facet_grid(.~ENM) + theme
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.5) + facet_grid(.~ENM) + theme_minimal()
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.5) + facet_grid(.~ENM) + theme_classic()
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.5) + facet_grid(.~ENM) + theme_bw()
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.5) + facet_grid(.~ENM) + theme_minimal()
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.5) + facet_grid(.~ENM) + theme_classic()
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM) + theme_classic()
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM) + theme_classic() + xlab("Radius (km)")
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM) + theme_classic() + xlab("radius (km)")
+enm <- c(#
+  "ENM_avm" = "Millet",#
+  "ENM_avs" = "Sorghum",#
+  "ENM_avz" = "Maize",#
+)
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(value = enm, yr = seasons)) + theme_classic() + xlab("radius (km)")
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(value = enm, yr = seasons)) + theme_classic() + xlab("radius (km)")
+enm <- c(#
+  "ENM_avm" = "Millet",#
+  "ENM_avs" = "Sorghum",#
+  "ENM_avz" = "Maize",#
+)
+enm <- c(#
+  "ENM_avm" = "Millet",#
+  "ENM_avs" = "Sorghum",#
+  "ENM_avz" = "Maize"#
+)
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(value = enm, yr = seasons)) + theme_classic() + xlab("radius (km)")
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(value = enm)) + theme_classic() + xlab("radius (km)")
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(value = enm)) + theme_classic() + xlab("radius (km)")
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(ENM = enm)) + theme_classic() + xlab("radius (km)")
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(ENM = enm)) + theme_classic() + xlab("radius (km)") + ylab("Predicted Specialization")
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(ENM = enm)) + theme_classic() + xlab("radius (km)") + ylab("Predicted specialization")
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(ENM = enm)) + theme_classic() + xlab("Radius (km)") + ylab("Predicted specialization")
+pdf("Radius_suppFig.pdf", height=2.5, width=6.8)#
+ggplot(df, aes(x=(radius/1000), y=value, group=locality)) + geom_line(lwd=0.3) + facet_grid(.~ENM, labeller=labeller(ENM = enm)) + theme_classic() + xlab("Radius (km)") + ylab("Predicted specialization")#
+dev.off()
+head(df)
+df <- read.csv('SI.dat.3.31.20.csv', header=T)
+head(df)
+df <- read.csv('SI.dat.3.31.20.csv', header=T)#
+df <- df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(c(ENM_avz, ENM_avm, ENM_avs))#
+df <- as.data.frame(df)#
+colnames(df)[3] <- "ENM"
+head(df)
+subset(df, ENM = "ENM_avs")
+df <- read.csv('SI.dat.3.31.20.csv', header=T)
+df <- df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius)
+df
+subset(df, radius==10000 | radius==170000)
+subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality) %>% pivot_wider()
+subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality) %>% pivot_wider(radius)
+subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality))
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>% pivot_wider(radius)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>% pivot_wider()
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>% pivot_wider(c(radius))
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>% pivot_wider(c(radius,ENM_avs))
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>% pivot_wider(values_from=ENM_avs, names_from=radius)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>% pivot_wider(values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>% pivot_wider(id_cols=locality, values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius) %>% pivot_wider(id_cols=locality, values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius) %>% pivot_wider(id_cols=locality)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius) %>% pivot_wider(ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius) %>% pivot_wider(id_cols=locality, names_from=radius, values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius) %>% pivot_wider(id_cols=locality, values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius) %>% pivot_wider(id_cols=locality, values_from=c(ENM_avs,radius))
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius) %>% pivot_wider()
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality, radius)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>%ivot_wider(id_cols=locality, values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=locality, values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality,radius), values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radiu, values_from=ENM_avs)
+tail(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=ENM_avs)
+(subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=ENM_avs)
+tmp <- (subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=ENM_avs)
+tmp
+as.data.frame(tmp)
+as.data.frame(tmp)[,1]
+as.data.frame(tmp)[,2]
+tmp$diff <- as.data.frame(tmp)[,2]-as.data.frame(tmp)[,3]
+tmp
+as.data.frame(tmp)
+df <- read.csv('SI.dat.3.31.20.csv', header=T)#
+df <- df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(c(ENM_avz, ENM_avm, ENM_avs))#
+df <- as.data.frame(df)#
+colnames(df)[3] <- "ENM"
+tmp <- (subset(df, radius==10000 | radius==170000) %>% select(ENM_avm, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=ENM_avm)
+head(df)
+tmp
+subset(df, radius==10000 | radius==170000) %>% select(ENM_avm, locality)) %>% group_by(locality)
+subset(df, radius==10000 | radius==170000) %>% select(ENM_avm, locality)) %>% group_by(locality))
+subset(df, radius==10000 | radius==170000) %>% select(ENM_avm, locality) %>% group_by(locality))
+subset(df, radius==10000 | radius==170000) %>% select(ENM_avm, locality) %>% group_by(locality)
+head(df)
+subset(df, radius==10000 | radius==170000) %>% select(ENM, locality) %>% group_by(locality)
+subset(df, radius==10000 | radius==170000 & ENM=="ENM_avm") %>% select(ENM, locality) %>% group_by(locality)
+df <- read.csv('SI.dat.3.31.20.csv', header=T)#
+df <- df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(c(ENM_avz, ENM_avm, ENM_avs))
+tmp <- (subset(df, radius==10000 | radius==170000) %>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=ENM_avs)
+head(df)
+colnames(df)[3] <- "ENM"
+tmp <- (subset(df, radius==10000 | radius==170000) %>% subset(ENM == "ENM_avs")%>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=ENM_avs)
+tmp <- (subset(df, radius==10000 | radius==170000) %>% filter(ENM == "ENM_avs")%>% select(ENM_avs, locality)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=ENM_avs)
+subset(df, radius==10000 | radius==170000)
+subset(df, radius==10000 | radius==170000) %>% filter(ENM=="ENM_avs")
+subset(df, radius==10000 | radius==170000) %>% filter(ENM=="ENM_avs")%>% select(-ENM)
+subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avs")%>% select(-ENM)) %>% group_by(locality)
+subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avs")%>% select(-ENM)) %>% group_by(locality))
+subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avs")%>% select(-ENM) %>% group_by(locality))
+subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avs")%>% select(-ENM) %>% group_by(locality)
+(subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avs")%>% select(-ENM)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=value)
+tmp <- (subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avm")%>% select(-ENM)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=value)
+tmp$diff <- as.data.frame(tmp)[,2]-as.data.frame(tmp)[,3] ## Bambey and Kobo for sorghum.
+tmp$diff
+tmp
+as.data.frame(tmp)
+tmp <- (subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avz")%>% select(-ENM)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=value)
+tmp$diff <- as.data.frame(tmp)[,2]-as.data.frame(tmp)[,3] ## Bambey and Kobo for sorghum.
+as.data.frame(tmp)
+subset(tmp, abs(diff)>0.2 )
+tmp <- (subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avs")%>% select(-ENM)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=value)
+tmp$diff <- as.data.frame(tmp)[,2]-as.data.frame(tmp)[,3] ## Bambey and Kobo for sorghum.
+subset(tmp, abs(diff)>0.2 )
+tmp <- (subset(df, radius==10000 | radius==170000) %>%filter(ENM=="ENM_avm")%>% select(-ENM)) %>% group_by(locality) %>%pivot_wider(id_cols=c(locality), names_from=radius, values_from=value)
+tmp$diff <- as.data.frame(tmp)[,2]-as.data.frame(tmp)[,3] ## Bambey and Kobo for sorghum.
+subset(tmp, abs(diff)>0.2 )
