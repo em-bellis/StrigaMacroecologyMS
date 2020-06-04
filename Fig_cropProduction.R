@@ -15,18 +15,27 @@ library(ggplot2)
 library(tidyr)
 library(lme4)
 library(pals)
+library(rgeos)
 
 ################ downsample enm layer resolution to match earthstat 
 enm <- raster('/Users/emilywork/Downloads/all.CLY250.tif')
 enm <- aggregate(enm, fact=10)
 
 ################ read in the production maps from earthstat
-sorg <- raster('/Users/emilywork/Desktop/EarthStat/sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')
+sorg <- raster('/Users/emilywork/Desktop/StrigaMacroecology/EarthStat/sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')
+sorg.yld <- raster('/Users/emilywork/Desktop/StrigaMacroecology/EarthStat/sorghum_HarvAreaYield_Geotiff/sorghum_YieldPerHectare.tif')
 sorg <- crop(sorg, enm)
-mill <- raster('/Users/emilywork/Desktop/EarthStat/millet_HarvAreaYield_Geotiff/millet_HarvestedAreaHectares.tif')
+sorg.yld <- crop(sorg.yld, enm)
+mill <- raster('/Users/emilywork/Desktop/StrigaMacroecology/EarthStat/millet_HarvAreaYield_Geotiff/millet_HarvestedAreaHectares.tif')
+mill.yld <- raster('/Users/emilywork/Desktop/StrigaMacroecology/EarthStat/millet_HarvAreaYield_Geotiff/millet_YieldPerHectare.tif')
 mill <- crop(mill, enm)
-maiz <- raster('/Users/emilywork/Desktop/EarthStat/maize_HarvAreaYield_Geotiff/maize_HarvestedAreaHectares.tif')
+mill.yld <- crop(mill.yld, enm)
+maiz <- raster('/Users/emilywork/Desktop/StrigaMacroecology/EarthStat/maize_HarvAreaYield_Geotiff/maize_HarvestedAreaHectares.tif')
+maiz.yld <- raster('/Users/emilywork/Desktop/StrigaMacroecology/EarthStat/maize_HarvAreaYield_Geotiff/maize_YieldPerHectare.tif')
 maiz <- crop(maiz, enm)
+maiz.yld <- crop(maiz.yld, enm)
+
+all.yld <- maiz.yld + mill.yld + sorg.yld
 
 ############### create mask based on habitat suitability of all occurrence model and distance from striga hermonthica
 core <- calc(enm, fun=function(x){ x[x < 0.1] <- NA; return(x)} )
@@ -67,7 +76,7 @@ cellStats(area(all_within, na.rm=TRUE), sum)*100 # 100 hectares = 1 km^2
 
 ############## visualization 
 pdf(file="CropProductionFig.pdf", pointsize=10, width=3.23, height=3.3)
-plot(dom2, col=c('sienna3','plum','gold2'),legend=F, xaxt='n', yaxt='n')
+plot(dom, col=c('sienna3','plum','gold2'),legend=F, xaxt='n', yaxt='n')
 legend(-18,-15, legend=c("sorghum","millet","maize"), fill=c('sienna3','plum','gold2'), box.col=NA, cex=0.5)
 map(database="world", xlim=c(-20,60),ylim=c(-40,45),add=T, col="grey40", lwd=0.5, mar=NA)
 points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=0.4)
@@ -80,3 +89,10 @@ tmp2 <- tmp %>% group_by(locality) %>% summarize(total=sum(emg))
 tmp3 <- inner_join(tmp, tmp2)
 
 ggplot(tmp3, aes(x=reorder(locality,-total), y=emg, col=host, fill=host)) + geom_bar(position="stack", stat="identity", alpha=0.4) +theme_minimal()+ scale_colour_manual(values=c('gold2','plum','sienna3')) + scale_fill_manual(values=c('gold2','plum','sienna3'))+ theme(axis.text.x=element_text(angle=90, vjust=0.2, hjust=1)) + ylab("Relative emergence") + xlab("Locality") + geom_errorbar()
+
+### extract productivity 
+all.yld <- maiz.yld + mill.yld + sorg.yld
+as.data.frame(meta %>% filter(host=="sorghum") %>% group_by(locality) %>% summarize(Emg = mean(emergence), lat = mean(lat), lon=mean(lon),ENM = mean(ENM_a_s50km)))
+
+
+
