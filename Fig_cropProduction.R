@@ -48,7 +48,7 @@ pol <- polygons(x)
 all_within <- mask(core, pol)
 
 ################  load gps points for experimental studies
-meta <- read.csv('SI.dat.1.30.20.csv')
+meta <- read.csv('/Users/emilywork/Documents/GitHub/StrigaMacroecologyMS/SI.dat.1.30.20.csv')
 meta <- subset(meta, emergence != "NA") # 27 localities
 
 ################ calcuate layer indicating dominant crop harvested 
@@ -92,7 +92,19 @@ ggplot(tmp3, aes(x=reorder(locality,-total), y=emg, col=host, fill=host)) + geom
 
 ### extract productivity 
 all.yld <- maiz.yld + mill.yld + sorg.yld
-as.data.frame(meta %>% filter(host=="sorghum") %>% group_by(locality) %>% summarize(Emg = mean(emergence), lat = mean(lat), lon=mean(lon),ENM = mean(ENM_a_s50km)))
 
+tmp <- meta %>% group_by(locality,host) %>% summarize(Emg = mean(emergence), lat = mean(lat), lon=mean(lon))
+tmp$productivity <- raster::extract(all.yld, cbind.data.frame(tmp$lon, tmp$lat))
+tmp.wide <- as.data.frame(tmp %>% pivot_wider(names_from=host, values_from=Emg))
+tmp.wide$spec <- NULL
+for (i in 1:nrow(tmp.wide)){
+  highest <- max(tmp.wide[i,5:7])
+  sec_highest <- sort(tmp.wide[i,5:7],partial=2)[2]
+  min_val <- min(tmp.wide[i,5:7])
+  tmp.wide$pdi[i] <- ((highest - sec_highest) + (highest - min_val))/2
+}
+tmp.wide$pdi <- as.numeric(tmp.wide$pdi)
+tmp.wide <- na.omit(tmp.wide)
 
-
+ggplot(tmp.wide, aes(x=productivity, y=pdi)) + geom_point(size=2, alpha=0.5) + ylab("Difference in relative emergence \non two best hosts") + xlab("Total yield per hectare") + geom_smooth(method ="lm")
+summary(lm(pdi ~ productivity, data=tmp.wide))

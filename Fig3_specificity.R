@@ -49,4 +49,6 @@ map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey
 scalebar(1000, xy = c(35,-33), type = "line", divs = 1, lonlat = TRUE)
 dev.off()
 
+
+
 #ggplot(meta.maize, aes(x=ENM, y=Emg)) + geom_point(pch=21) + theme_classic() + ylab("Mean emergence\n(sorghum)")
