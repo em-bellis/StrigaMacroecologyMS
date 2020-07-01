@@ -1,4 +1,4 @@
-####Analysis of specialization from empicial studies using herbarium occurence data 
+###Herbarium occurence data as metric of specialization
 library(lme4)
 library(readr)
 library(dplyr)
