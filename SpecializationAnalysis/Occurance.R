@@ -36,8 +36,4 @@ anova(z.1, z.2, test="Chisqu")
 #plot(ranef(s.1))
 #plot(s.1)
 #plot(s.2)
-#plot(mod.sorghum.ENM)
 
-summary(mod.sorghum.ENM)
-summary(s.1)
-summary(s.2)
