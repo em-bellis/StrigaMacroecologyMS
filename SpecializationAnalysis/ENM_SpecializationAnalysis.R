@@ -1,5 +1,5 @@
 ##Updated 7.1.20
-##Analysis of specialization using ENMs 
+##ENMs as metric of specialization
 
 library(lme4)
 library(readr)
@@ -112,7 +112,10 @@ plot(newmap,
 points(SI.dat$lat, SI.dat$lon, col = "red", cex = .6)
 
 ##########################################
-##Individual model coefficent significance
+##approximated coefficents of linear models using Satterwaithes method for crop harvest
+##note:: If the error code "[,5] out of bounds"appears, re-run models with "lmerTest" which 
+#includes approximates more model parameters (including p-values) than "lme4"
+
 require(lmerTest)
 
 ##Sorghum
