@@ -21,36 +21,31 @@ SMZ.dat <- data.frame(locality= ENM.all$locality,lat= ENM.all$lat, lon= ENM.all$
 SI.dat <- merge(Emerg.dat, SMZ.dat, by="locality", all=TRUE)
 
 ##Sorghum model
-mod.sorg.ENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_s50km, data=SI.dat[SI.dat$host=="sorghum",])
-mod.sorg <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="sorghum",])
+s.1.enm <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="sorghum",])
+s.2.enm <-lmer(emergence ~ (1 | host.gen) + ENM_a_s50km, data=SI.dat[SI.dat$host=="sorghum",])
 
-##Effect of ENM on emergence predictions
-anova.sorg <-anova(mod.sorg.ENM, mod.sorg, test=("Chisq"))
-anova.sorg
-
-##Maize model
-mod.maize.ENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_z50km, data=SI.dat[SI.dat$host=="maize",])
-mod.maize<-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="maize",])
-
-anova.maize <-anova(mod.maize.ENM, mod.maize, test=("Chisq"))
-anova.maize
+anova(s.1.enm, s.2.enm, test="Chisqu")
 
 ##Millet model
-mod.millet.ENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_m50km, data=SI.dat[SI.dat$host=="millet",])
-mod.millet <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="millet",])
+m.1.enm <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="millet",])
+m.2.enm <-lmer(emergence ~ (1 | host.gen) + ENM_a_m50km, data=SI.dat[SI.dat$host=="millet",])
+anova(m.1.enm, m.2.enm, test="Chisqu")
 
-anova.millet <- anova(mod.millet.ENM, mod.millet, test=("Chisq"))
-anova.millet
+##Maize model
+z.1.enm <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="maize",])
+z.2.enm <-lmer(emergence ~ (1 | host.gen) + ENM_a_z50km, data=SI.dat[SI.dat$host=="maize",])
+
+anova(z.1.enm, z.2.enm, test="Chisqu")
 
 ###Looking at other host ENMs to determine if a signifciant predictors for maize emergence###
 ##Sorghum ENM for maize emergence 
-mod.maize.sENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_s50km, data=SI.dat[SI.dat$host=="maize",])
-anova.maize.s <-anova(mod.maize.sENM, mod.maize, test=("Chisq"))
+z.2.Senm <- lmer(emergence ~ (1 | host.gen) + ENM_a_s50km, data=SI.dat[SI.dat$host=="maize",])
+
+anova(z.1, z.2.Senm, test=("Chisq"))
 
 ##Millet ENM for maize emergence 
-
-mod.maize.mENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_m50km, data=SI.dat[SI.dat$host=="maize",])
-anova.maize.m <- anova(mod.maize.mENM, mod.maize, test=("Chisq"))
+z.2.Menm <- lmer(emergence ~ (1 | host.gen) + ENM_a_m50km, data=SI.dat[SI.dat$host=="maize",])
+anova(z.1, z.2.Menm, test=("Chisq"))
 
 ###################################
 ##ENM Standard Deviation
@@ -120,26 +115,26 @@ require(lmerTest)
 
 ##Sorghum
 #extract coefficients
-coef.s <- data.frame(coef(summary(mod.sorg.ENM)))
+coef.s <- data.frame(coef(summary(s.2.enm)))
 #use normal distribution to approximate p-value
 coef.s$p.z <- 2 * (1 - pnorm(abs(coef.s$t.value)))
 #get Satterthwaite-approximated degrees of freedom
-coef.s$df.Satt <- coef(summary(mod.sorg.ENM))[, 3]
+coef.s$df.Satt <- coef(summary(s.2.enm))[, 3]
 # get approximate p-values for model
-coef.s$p.Satt <- coef(summary(mod.sorg.ENM))[, 5]
+coef.s$p.Satt <- coef(summary(s.2.enm))[, 5]
 coef.s
 
 ##Repeat above with other host crops
 ##Millet
-coef.m <- data.frame(coef(summary(mod.millet.ENM)))
+coef.m <- data.frame(coef(summary(m.2.enm)))
 coef.m$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
-coef.m$df.Satt <- coef(summary(mod.millet.ENM))[, 3]
-coef.m$p.Satt <- coef(summary(mod.millet.ENM))[, 5]
+coef.m$df.Satt <- coef(summary(m.2.enm))[, 3]
+coef.m$p.Satt <- coef(summary(m.2.enm))[, 5]
 coef.m
 
 ##Maize
-coef.z <- data.frame(coef(summary(mod.maize.ENM)))
+coef.z <- data.frame(coef(summary(z.2.enm)))
 coef.z$p.z <- 2 * (1 - pnorm(abs(coefs$t.value)))
-coef.z$df.Satt <- coef(summary(mod.maize.ENM))[, 3]
-coef.z$p.Satt <- coef(summary(mod.maize.ENM))[, 5]
+coef.z$df.Satt <- coef(summary(z.2.enm))[, 3]
+coef.z$p.Satt <- coef(summary(z.2.enm))[, 5]
 coef.z
