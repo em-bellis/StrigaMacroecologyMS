@@ -13,24 +13,24 @@ occ <- read_csv("Occurance_Data_5.11.20.csv")
 occ.all <- SD %>% right_join (occ)
 
 ##Sorghum
-s.1 <-lmer(emergence~ (1 | host.gen), data=occ.all[occ.all$host=="sorghum",])
-s.2 <-lmer(emergence ~ (1 | host.gen) + sorg.p , data=occ.all[occ.all$host=="sorghum",])
+s.1.occ <-lmer(emergence~ (1 | host.gen), data=occ.all[occ.all$host=="sorghum",])
+s.2.occ <-lmer(emergence ~ (1 | host.gen) + sorg.p , data=occ.all[occ.all$host=="sorghum",])
 
-anova(s.1, s.2, test="Chisqu")
+anova(s.1.occ, s.2.occ, test="Chisqu")
 
 #plot(occ.all$emergence, occ.all$sorg.p)
 
 ##Millet
-m.1 <-lmer(emergence~ (1 | host.gen), data=occ.all[occ.all$host=="millet",])
-m.2 <-lmer(emergence ~ (1 | host.gen) + mil.p , data=occ.all[occ.all$host=="millet",])
+m.1.occ <-lmer(emergence~ (1 | host.gen), data=occ.all[occ.all$host=="millet",])
+m.2.occ <-lmer(emergence ~ (1 | host.gen) + mil.p , data=occ.all[occ.all$host=="millet",])
 
-anova(m.1, m.2, test="Chisqu")
+anova(m.1.occ, m.2.occ, test="Chisqu")
 
 ##Maize
-z.1 <-lmer(emergence ~ (1 | host.gen), data=occ.all[occ.all$host=="maize",])
-z.2 <-lmer(emergence ~ (1 | host.gen) + maiz.p , data=occ.all[occ.all$host=="maize",])
+z.1.occ <-lmer(emergence ~ (1 | host.gen), data=occ.all[occ.all$host=="maize",])
+z.2.occ <-lmer(emergence ~ (1 | host.gen) + maiz.p , data=occ.all[occ.all$host=="maize",])
 
-anova(z.1, z.2, test="Chisqu")
+anova(z.1.occ, z.2.occ, test="Chisqu")
 
 #plot(emergence, maiz.p, data=occ.all[occ.all$host=="maize",])
 #plot(ranef(s.2))
