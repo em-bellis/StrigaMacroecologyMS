@@ -92,22 +92,22 @@ emrg <- read.csv("~/Desktop/Research/Lasky/StrigaMacroecology/ModelWD/New.Stand.
 CH.dat <- merge(emrg, Crop.Harvest, by="locality", all=TRUE)
 
 ##Sorghum
-s.1 <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="sorghum",])
-s.2 <-lmer(emergence ~ (1 | host.gen) + sorg.50km , data=CH.dat[CH.dat$host=="sorghum",])
+s.1.ch <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="sorghum",])
+s.2.ch <-lmer(emergence ~ (1 | host.gen) + sorg.50km , data=CH.dat[CH.dat$host=="sorghum",])
 
-anova(s.1, s.2, test="Chisqu")
+anova(s.1.ch, s.2.ch, test="Chisqu")
 
 ##Millet
-m.1 <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="millet",])
-m.2 <-lmer(emergence ~ (1 | host.gen) + mill.50km , data=CH.dat[CH.dat$host=="millet",])
+m.1.ch <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="millet",])
+m.2.ch <-lmer(emergence ~ (1 | host.gen) + mill.50km , data=CH.dat[CH.dat$host=="millet",])
 
-anova(m.1, m.2, test="Chisqu")
+anova(m.1.ch, m.2.ch, test="Chisqu")
 
 ##Maize
-z.1 <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="maize",])
-z.2 <-lmer(emergence ~ (1 | host.gen) + maiz.50km , data=CH.dat[CH.dat$host=="maize",])
+z.1.ch <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="maize",])
+z.2.ch <-lmer(emergence ~ (1 | host.gen) + maiz.50km , data=CH.dat[CH.dat$host=="maize",])
 
-anova(z.1, z.2, test="Chisqu")
+anova(z.1.ch, z.2.ch, test="Chisqu")
 
 ##approximated coefficents of linear models using Satterwaithes method for crop harvest
 ##note:: If the error code "[,5] out of bounds"appears, re-run models with "lmerTest" which 
@@ -117,28 +117,28 @@ require(lmerTest)
 
 ##Sorghum
 #extract coefficients
-coef.s.ch <- data.frame(coef(summary(s.2)))
+coef.s.ch <- data.frame(coef(summary(s.2.ch)))
 #use normal distribution to approximate p-value
 coef.s.ch$p.z <- 2 * (1 - pnorm(abs(coef.s.ch$t.value)))
 #get Satterthwaite-approximated degrees of freedom
-coef.s$df.Satt <- coef(summary(s.2))[, 3]
+coef.s$df.Satt <- coef(summary(s.2.ch))[, 3]
 # get approximate p-values for a model
-coef.s.ch$p.Satt <- coef(summary(s.2))[, 5]
+coef.s.ch$p.Satt <- coef(summary(s.2.ch))[, 5]
 coef.s.ch
 
 #repeat above for other crops 
 ##Millet
-coef.m.ch <- data.frame(coef(summary(m.2)))
+coef.m.ch <- data.frame(coef(summary(m.2.ch)))
 coef.m.ch$p.z <- 2 * (1 - pnorm(abs(coef.m.ch$t.value)))
-coef.m.ch$df.Satt <- coef(summary(m.2))[, 3]
-coef.m.ch$p.Satt <- coef(summary(m.2))[, 5]
+coef.m.ch$df.Satt <- coef(summary(m.2.ch))[, 3]
+coef.m.ch$p.Satt <- coef(summary(m.2.ch))[, 5]
 coef.m.ch
 
 ##Maize
-coef.z.ch <- data.frame(coef(summary(z.2)))
+coef.z.ch <- data.frame(coef(summary(z.2.ch)))
 coef.z.ch$p.z <- 2 * (1 - pnorm(abs(coef.z.ch$t.value)))
-coef.z.ch$df.Satt <- coef(summary(z.2))[, 3]
-coef.z.ch$p.Satt <- coef(summary(z.2))[, 5]
+coef.z.ch$df.Satt <- coef(summary(z.2.ch))[, 3]
+coef.z.ch$p.Satt <- coef(summary(z.2.ch))[, 5]
 coef.z.ch
 
 
