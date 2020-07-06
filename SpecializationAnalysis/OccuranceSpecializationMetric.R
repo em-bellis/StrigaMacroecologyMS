@@ -6,11 +6,13 @@ library(dplyr)
 
 #setwd("~/Desktop/Research/Lasky/StrigaMacroecology/ModelWD")
 
-SD <- read_csv("SI.dat.4.2.20_StDev.csv")
+SI.dat <- read.csv("SI.dat.master.csv")
+SI.dat$X <-NULL
 ##Occurence Data 
 occ <- read_csv("Occurance_Data_5.11.20.csv")
 
-occ.all <- SD %>% right_join (occ)
+occ.all <- left_join(SI.dat, occ, by="locality")
+na.omit(occ.all)
 
 ##Sorghum
 s.1.occ <-lmer(emergence~ (1 | host.gen), data=occ.all[occ.all$host=="sorghum",])
@@ -37,4 +39,3 @@ anova(z.1.occ, z.2.occ, test="Chisqu")
 #plot(ranef(s.1))
 #plot(s.1)
 #plot(s.2)
-
