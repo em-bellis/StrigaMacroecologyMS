@@ -4,7 +4,7 @@
 library(lme4)
 library(readr)
 
-setwd("~/Desktop/Research/Lasky/StrigaMacroecology/ModelWD/")
+#setwd("~/Desktop/Research/Lasky/StrigaMacroecology/ModelWD/")
 
 ##Making data table only including locaitons with comparative host species
 New.Stand <- read.csv("New.Stand.1.11.20.csv")
@@ -40,12 +40,11 @@ anova(z.1.enm, z.2.enm, test="Chisqu")
 ###Looking at other host ENMs to determine if a signifciant predictors for maize emergence###
 ##Sorghum ENM for maize emergence 
 z.2.Senm <- lmer(emergence ~ (1 | host.gen) + ENM_a_s50km, data=SI.dat[SI.dat$host=="maize",])
-
-anova(z.1, z.2.Senm, test=("Chisq"))
+anova(z.1.enm, z.2.Senm, test=("Chisq"))
 
 ##Millet ENM for maize emergence 
 z.2.Menm <- lmer(emergence ~ (1 | host.gen) + ENM_a_m50km, data=SI.dat[SI.dat$host=="maize",])
-anova(z.1, z.2.Menm, test=("Chisq"))
+anova(z.1.enm, z.2.Menm, test=("Chisq"))
 
 ###################################
 ##ENM Standard Deviation
@@ -56,40 +55,32 @@ SD <- read_csv("SI.dat.4.2.20_StDev.csv")
 ##Fixed effect of SD
 s.ENM.SD.f <-lmer(emergence ~ (1 | host.gen) + ENM_a_s50km + ENM_avs_sd, data=SD[SD$host=="sorghum",])
 ##same models as previous section, had to be recreated because with a new dataset
-s.ENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_s50km,  data=SD[SD$host=="sorghum",])
 s <-lmer(emergence ~ (1 | host.gen),  data=SD[SD$host=="sorghum",])
+s.ENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_s50km,  data=SD[SD$host=="sorghum",])
 
 ##NO SD, confirm same output
-s.anova<- anova(s, s.ENM, test=("Chisq"))
-s.anova
+anova(s, s.ENM, test=("Chisq"))
 ##anova comparing emergence vs emergence with ENM and SD as fixed effects
-anova.s.SD <-anova(s.ENM.SD.f, s, test=("Chisq"))
-anova.s.SD
+anova(s.ENM.SD.f, s, test=("Chisq"))
+
 
 ##Millet
 m.ENM.SD.f <-lmer(emergence ~ (1 | host.gen) + ENM_a_m50km + ENM_avm_sd, data=SD[SD$host=="millet",])
 m.ENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_m50km,  data=SD[SD$host=="millet",])
 m <-lmer(emergence ~ (1 | host.gen),  data=SD[SD$host=="millet",])
-
 ###NO SD 
-m.anova <- anova(m, m.ENM, test=("Chisq"))
-m.anova
+anova(m, m.ENM, test=("Chisq"))
 ###including SD and ENM as fixed 
-anova.m.SD <-anova(m, m.ENM.SD.f, test=("Chisq"))
-anova.m.SD
+anova(m, m.ENM.SD.f, test=("Chisq"))
 
 ##Maize
 z.ENM.SD.f <-lmer(emergence ~ (1 | host.gen) + ENM_a_z50km + ENM_avz_sd, data=SD[SD$host=="maize",])
 z.ENM <-lmer(emergence ~ (1 | host.gen) + ENM_a_z50km,  data=SD[SD$host=="maize",])
 z <-lmer(emergence ~ (1 | host.gen),  data=SD[SD$host=="maize",])
-
 ##NO SD
-z.anova <-anova(z, z.ENM, test=("Chisq"))
-z.anova
-
+anova(z, z.ENM, test=("Chisq"))
 ##Including ENM and SD
-anova.z.SD <-anova(z, z.ENM.SD.f, test=("Chisq"))
-anova.z.SD
+anova(z, z.ENM.SD.f, test=("Chisq"))
 
 ##Map of the locations used from empirical studies
 library(rworldmap)
