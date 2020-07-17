@@ -52,8 +52,8 @@ for (i in 1:nrow(tmp.wide)){
 tmp.wide$pdi <- as.numeric(tmp.wide$pdi)
 tmp.wide <- na.omit(tmp.wide)
 
-p <- ggplot(tmp.wide, aes(x=productivity, y=pdi)) + geom_point(size=2, alpha=0.5) + ylab("PDI") + xlab("Productivity") + geom_smooth(method ="lm", col="black", lty=2)+theme_minimal()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
-summary(lm(pdi ~ productivity, data=tmp.wide))
+p <- ggplot(tmp.wide, aes(x=productivity, y=pdi)) + geom_point(size=2, alpha=0.5) + ylab("PDI") + xlab("Productivity") + geom_smooth(method ="lm", col="black", lty=2, level=0.9)+theme_minimal()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
+anova(lm(pdi ~ productivity, data=tmp.wide), lm(pdi ~ 1, data=tmp.wide), test="Chisq")
 
 arrange(tmp.wide, -pdi)
 arrange(tmp.wide, -productivity)
@@ -91,8 +91,14 @@ acsel.m$hs <- hs
 acsel <- rbind.data.frame(acsel.s, acsel.z, acsel.m)
 acsel$prod <- raster::extract(all.yld, cbind(acsel$lon,acsel$lat))
 
-q <- ggplot(acsel, aes(x=prod, y=hs, fill=host, col=host)) + geom_point(alpha=0.5, pch=21, size=0.75) + ylab("Parasite HS") + xlab("Productivity") + geom_smooth(se=T, lwd=1, alpha=0.5, level=0.9)+theme_minimal()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank(), legend.position = c(0.1,0.8)) + xlim(c(0,4.75)) + scale_fill_manual(values=c('gold2','plum','sienna3'), name="Host")+ scale_color_manual(values=c('gold3','plum','sienna3'), name="Host")
+q <- ggplot(acsel, aes(x=prod, y=hs, fill=host, col=host)) + geom_point(alpha=0.5, pch=21, size=0.75) + ylab("Parasite HS") + xlab("Productivity") + geom_smooth(se=T, lwd=1, alpha=0.5, level=0.9)+theme_minimal()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank(), legend.position = "none") + xlim(c(0,4.75)) + scale_fill_manual(values=c('gold2','plum','sienna3'), name="Host")+ scale_color_manual(values=c('gold3','plum','sienna3'), name="Host")
 q
 pdf(file="ProductivityFig", height=5, width=3.22)
 plot_grid(p,q, align="v", axis="r", labels=c('A','B'), cols=1)
 dev.off()
+
+acsel.sub <- subset(acsel, host =="millet" | host=="maize")
+wilcox.test(subset(acsel, host=="maize")$prod, subset(acsel, host=="sorghum")$prod, alternative="greater")
+  
+  
+)

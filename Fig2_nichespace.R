@@ -87,16 +87,13 @@ B <- ggplot()+ geom_density(data=env.core.df,aes(x=env/10), fill="plum",col="plu
 #soil N
 D <- ggplot()+ geom_density(data=env.core.df,aes(x=env), fill="plum",col="plum", size=0.5, alpha=0.3) + geom_density(data=env.core.sorg.df,aes(x=env), fill="sienna3",col="sienna3", size=0.5, alpha=0.3)+ geom_density(data=env.core.maiz.df,aes(x=env), fill="gold3", col="gold3", size=0.5, alpha=0.3)+ theme_classic() + xlab("soil N") + ylab("") +scale_x_continuous(limits=c(0,2000),breaks=c(0,1000,2000))+ theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
 ##clay; place in last spot; has legend
-C <- ggplot()+ geom_density(data=env.core.df,aes(x=env, fill="millet",col="millet"), size=0.5, alpha=0.3) + geom_density(data=env.core.sorg.df,aes(x=env, fill="sorghum",col="sorghum"), size=0.5, alpha=0.3)+ geom_density(data=env.core.maiz.df,aes(x=env, fill="maize", col="maize"), size=0.5, alpha=0.3)+ theme_classic() + xlab("clay") + ylab("") + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())+ scale_fill_manual(name="Host", values=c("maize"="gold3","millet"="plum","sorghum"="sienna3"), labels=c("maize","millet","sorghum") )+ scale_color_manual(name="Host", values=c("maize"="gold3","millet"="plum","sorghum"="sienna3"), labels=c("maize","millet","sorghum")) + theme(legend.position = c(0.7,0.8))
+C <- ggplot()+ geom_density(data=env.core.df,aes(x=env, fill="millet",col="millet"), size=0.5, alpha=0.3) + geom_density(data=env.core.sorg.df,aes(x=env, fill="sorghum",col="sorghum"), size=0.5, alpha=0.3)+ geom_density(data=env.core.maiz.df,aes(x=env, fill="maize", col="maize"), size=0.5, alpha=0.3)+ theme_classic() + xlab("clay") + ylab("") + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())+ scale_fill_manual(name="Host", values=c("maize"="gold3","millet"="plum","sorghum"="sienna3"), labels=c("maize","millet","sorghum") )+ scale_color_manual(name="Host", values=c("maize"="gold3","millet"="plum","sorghum"="sienna3"), labels=c("maize","millet","sorghum")) + theme(legend.position = c(0.78,0.6))
 
 
-bottom_row <- plot_grid(p, q, labels = c('E', 'F'), label_size = 12, rel_widths = c(0.8,1))
-p4 <- plot_grid(A,B,D,C, cols=4, rel_widths = c(0.9,0.9,0.9,1), labels = c('A','B','C','D'), label_size = 12)
+bottom_row <- plot_grid(q, p, labels = c('E', 'F'), label_size = 12, rel_widths = c(1, 0.8))
+p4 <- plot_grid(A,B,D,C, cols=4, rel_widths = c(0.85,0.85,0.85,1), labels = c('A','B','C','D'), label_size = 12)
 
+pdf(file="NicheFig.pdf", height=4, width=6.81)
 plot_grid(p4, bottom_row, ncol = 1)
-
-
-pdf(file="NicheFig", height=2.5, width=6.81)
-
 dev.off()
 
