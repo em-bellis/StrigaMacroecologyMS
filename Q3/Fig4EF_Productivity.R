@@ -1,3 +1,6 @@
+## This script is used to recreate Figure 4E & F
+## please contact ebellis@astate.edu with any questions!
+
 library(raster)
 library(maptools)
 data(wrld_simpl)
@@ -35,13 +38,16 @@ maiz.yld <- crop(maiz.yld, enm)
 
 all.yld <- maiz.yld + mill.yld + sorg.yld
 
-meta <- read.csv('/Users/emilywork/Documents/GitHub/StrigaMacroecologyMS/SI.dat.1.30.20.csv')
+############### gps locations of experiments
+meta <- read.csv('DataFiles/SI.dat.1.30.20.csv')
 meta <- subset(meta, emergence != "NA") # 27 localities
 
-### extract productivity 
+############### extract productivity 
 tmp <- meta %>% group_by(locality,host) %>% summarize(Emg = mean(emergence), lat = mean(lat), lon=mean(lon))
 tmp$productivity <- raster::extract(all.yld, cbind.data.frame(tmp$lon, tmp$lat))
 tmp.wide <- as.data.frame(tmp %>% pivot_wider(names_from=host, values_from=Emg))
+
+############## calculate paired difference index 
 tmp.wide$spec <- NULL
 for (i in 1:nrow(tmp.wide)){
   highest <- max(tmp.wide[i,5:7])
@@ -52,20 +58,20 @@ for (i in 1:nrow(tmp.wide)){
 tmp.wide$pdi <- as.numeric(tmp.wide$pdi)
 tmp.wide <- na.omit(tmp.wide)
 
+############### Fig. 4F
 p <- ggplot(tmp.wide, aes(x=productivity, y=pdi)) + geom_point(size=2, alpha=0.5) + ylab("PDI") + xlab("Productivity") + geom_smooth(method ="lm", col="black", lty=2, level=0.9)+theme_minimal()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
+
 anova(lm(pdi ~ productivity, data=tmp.wide), lm(pdi ~ 1, data=tmp.wide), test="Chisq")
 
-arrange(tmp.wide, -pdi)
-arrange(tmp.wide, -productivity)
-
-### habitat suitability at location of all S. hermonthica occurrences 
-# occurrences for subset on different hosts 
+################ Fig. 4E, habitat suitability at location of all S. hermonthica occurrences 
+# get occurrences for subset on different hosts 
 shgeo <- read.csv('/Users/emilywork/Downloads/pnas.1908707117.sd03.csv', header=T)
 coordinates(shgeo) <- ~lon+lat
 sh.s <- subset(shgeo, sorghum==1)
 sh.z <- subset(shgeo, maize==1)
 sh.m <- subset(shgeo, millet==1)
 
+# downsample shgeo so only one occurrence per grid cell
 r <- enm
 res(r) <- 0.01 #0.1 degree ~ 11 km
 r <- extend(r, extent(r)+1)
@@ -73,6 +79,7 @@ acsel.s <- gridSample(sh.s, r, n=1)
 acsel.z <- gridSample(sh.z, r, n=1)
 acsel.m <- gridSample(sh.m, r, n=1)
 
+# extract habitat suitability from enms
 hs <- raster::extract(enm.s, acsel.s)
 acsel.s <- as.data.frame(acsel.s)
 acsel.s$host <- "sorghum"
@@ -91,11 +98,19 @@ acsel.m$hs <- hs
 acsel <- rbind.data.frame(acsel.s, acsel.z, acsel.m)
 acsel$prod <- raster::extract(all.yld, cbind(acsel$lon,acsel$lat))
 
+# plot
 q <- ggplot(acsel, aes(x=prod, y=hs, fill=host, col=host)) + geom_point(alpha=0.5, pch=21, size=0.75) + ylab("Parasite HS") + xlab("Productivity") + geom_smooth(se=T, lwd=1, alpha=0.5, level=0.9)+theme_minimal()+theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank(), legend.position = "none") + xlim(c(0,4.75)) + scale_fill_manual(values=c('gold2','plum','sienna3'), name="Host")+ scale_color_manual(values=c('gold3','plum','sienna3'), name="Host")
-q
+
 pdf(file="ProductivityFig", height=5, width=3.22)
 plot_grid(p,q, align="v", axis="r", labels=c('A','B'), cols=1)
 dev.off()
 
+############ wilcoxon rank sum tests
+# combined host productivity is higher where S. hermonthica parasitizes maize vs. millet: 
 acsel.sub <- subset(acsel, host =="millet" | host=="maize")
+wilcox.test(subset(acsel, host=="maize")$prod, subset(acsel, host=="millet")$prod, alternative="greater")
+
+# but not for maize vs. sorghum:
+acsel.sub <- subset(acsel, host =="sorghum" | host=="maize")
 wilcox.test(subset(acsel, host=="maize")$prod, subset(acsel, host=="sorghum")$prod, alternative="greater")
+

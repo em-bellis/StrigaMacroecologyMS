@@ -1,5 +1,5 @@
-#updated 3.12.20
-#this script is to make a figure of subtracted ENMs
+## This script is used to recreate Figure 5
+## please contact ebellis@astate.edu with any questions!
 
 library(raster)
 library(viridis)
@@ -48,7 +48,3 @@ plot(avz.core, col=coolwarm(20), breaks=seq(-1,1,by=0.1),legend=T, xaxt='n', yax
 map(database="world", xlim=c(-20,60),ylim=c(-40,45),axes=FALSE, add=T, col="grey50", lwd=0.7)
 scalebar(1000, xy = c(35,-33), type = "line", divs = 1, lonlat = TRUE)
 dev.off()
-
-
-
-#ggplot(meta.maize, aes(x=ENM, y=Emg)) + geom_point(pch=21) + theme_classic() + ylab("Mean emergence\n(sorghum)")

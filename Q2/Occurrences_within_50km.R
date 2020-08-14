@@ -1,32 +1,25 @@
-library(raster)
-library(maptools)
-data(wrld_simpl)
+## This script is used to calculate number of occurrences from natural history collections within a 50km radius of locations from experimental studies
+## please contact ebellis@astate.edu with any questions!
+
 library(raster)
 library(dplyr)
 library(rgdal)
 library(dismo)
 library(maps)
-data(worldMapEnv)
-library(viridis)
-library(ggplot2)
 library(tidyr)
-library(lme4)
-library(pals)
 
 ############### load occurrence points
 shgeo <- read.csv('/Users/emilywork/Downloads/pnas.1908707117.sd03.csv', header=T)
 whost <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
 coordinates(whost) <- ~lon+lat
-projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
+projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84')
 
 ################  load gps points for experimental studies
-meta <- read.csv('SI.dat.1.30.20.csv')
-meta <- subset(meta, emergence != "NA") # 27 localities
-meta <- read.csv('SI.dat.1.30.20.csv')
+meta <- read.csv('DataFiles/SI.dat.1.30.20.csv')
 meta <- subset(meta, emergence != "NA") # 27 localitiesm
-meta.coords <- meta %>% select(lat,lon,locality) %>% unique()
+meta.coords <- meta %>% dplyr::select(lat,lon,locality) %>% unique()
 coordinates(meta.coords) <- ~lon + lat
-projection(meta.coords) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
+projection(meta.coords) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84')
 
 ###### polygons within radius of metaanalyses
 x.50 <- circles(meta.coords, d=50000, lonlat=T) #sample within radius of 200km
@@ -37,7 +30,7 @@ whost <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
 shgeo.50km <- subset(whost, !(row(whost)[,1] %in% i)) # 72 observations
 
 coordinates(whost) <- ~lon+lat
-projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0')
+projection(whost) <- CRS('+proj=longlat +datum=WGS84 +ellps=WGS84')
 
 whost.df <- subset(shgeo, millet == 1 | sorghum == 1 | maize==1)
 whost.df$meta <- NA
