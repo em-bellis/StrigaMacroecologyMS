@@ -1,1 +1,1 @@
-
+**Occurrences_within_50km.R** is used to create **Occurrences_within_50km.csv**, which is a file of all locations of origin of *S. hermonthica* tested for relative emergence, along with number of specimens from natural history collections identified on a particular host species within a radius of 50 km.
