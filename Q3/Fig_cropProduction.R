@@ -72,19 +72,33 @@ dom.z <- setExtent(dom.z, all_within); dom.z <- mask(dom.z, all_within); cellSta
 cellStats(area(dom, na.rm=TRUE), sum)*100 # 100 hectares = 1 km^2
 cellStats(area(all_within, na.rm=TRUE), sum)*100 # 100 hectares = 1 km^2
 
-
+## new df for meta
+meta2 <- select(meta, locality, lat, lon) %>% unique()
+meta2$clust <- c(3,5,16,17,5,5,16,2,16,5,5,5,5,3,5,6,3,17,2,5,5,6,3,2,3,3,3)
+dom.c <- crop(dom, extent(-20,45,-20,20))
 
 ############## visualization 
-pdf(file="CropProductionFig.pdf", pointsize=10, width=3.23, height=3.3)
-plot(dom, col=c('sienna3','plum','gold2'),legend=F, xaxt='n', yaxt='n')
-legend(-18,-15, legend=c("sorghum","millet","maize"), fill=c('sienna3','plum','gold2'), box.col=NA, cex=0.5)
-map(database="world", xlim=c(-20,60),ylim=c(-40,45),add=T, col="grey40", lwd=0.5, mar=NA)
-points(cbind(unique(meta$lon),unique(meta$lat)), pch=17, cex=0.4)
-scalebar(1000, xy = c(40,-35), label=" 1000 km",type = "line", divs = 1, lwd = 2,  adj=c(0.5, -0.5), lonlat = TRUE, cex=0.6)
+pdf(file="CropProductionFig_A.pdf", pointsize=10, width=4.33, height=3)
+
+plot(dom.c, col=c('sienna3','plum','gold2'),legend=F, xaxt='n', yaxt='n', xlim=c(-20,45),ylim=c(-5,20))
+legend(-5,-15, legend=c("1","2","3","4","5","6"), pch=c(17,2,3,16,5,6), box.col=NA, cex=0.5, title="Group")
+legend(-18,-15, legend=c("sorghum","millet","maize"), fill=c('sienna3','plum','gold2'), box.col=NA, cex=0.5, title ="Main crop")
+map(database="world", xlim=c(-20,50),ylim=c(-10,20),add=T, col="grey40", lwd=0.5, mar=NA)
+points(meta2$lon,meta2$lat, pch=meta2$clus, cex=0.7)
+scalebar(1000, xy = c(-5,-10), label=" 1000 km",type = "line", divs = 1, lwd = 2,  adj=c(0.5, -0.5), lonlat = TRUE, cex=0.6)
 dev.off()
 
+pdf(file="CropProductionFig_B.pdf", pointsize=10, width=4.33, height=3)
+plot(dom, col=c('sienna3','plum','gold2'),legend=F, xaxt='n', yaxt='n', xlim=c(-20,50),ylim=c(-40,45))
+legend(-5,-5, legend=c("1","2","3","4","5","6"), pch=c(17,2,3,16,5,6), box.col=NA, cex=0.5, title="Group")
+#legend(-18,-15, legend=c("sorghum","millet","maize"), fill=c('sienna3','plum','gold2'), box.col=NA, cex=0.5, title ="Main crop")
+map(database="world", xlim=c(-20,50),ylim=c(-40,45),add=T, col="grey40", lwd=0.5, mar=NA)
+scalebar(1000, xy = c(35,-32), label=" 1000 km",type = "line", divs = 1, lwd = 2,  adj=c(0.5, -0.5), lonlat = TRUE, cex=0.6)
+dev.off()
+
+
 ############## fig for relative emergence. 
-tmp <- meta %>% select(locality, emergence, host) %>% group_by(locality, host) %>% summarize(emg = mean(emergence), sd = sd(emergence), n=length(emergence))
+tmp <- meta %>% select(locality, emergence, host) %>% group_by(locality, host) %>% summarize(emg = mean(emergence), sd = sd(emergence), n=length(emergence)) 
 tmp2 <- tmp %>% group_by(locality) %>% summarize(total=sum(emg))
 tmp3 <- inner_join(tmp, tmp2)
 

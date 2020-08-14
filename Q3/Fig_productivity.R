@@ -99,6 +99,3 @@ dev.off()
 
 acsel.sub <- subset(acsel, host =="millet" | host=="maize")
 wilcox.test(subset(acsel, host=="maize")$prod, subset(acsel, host=="sorghum")$prod, alternative="greater")
-  
-  
-)
