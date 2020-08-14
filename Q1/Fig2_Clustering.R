@@ -1,5 +1,5 @@
-##2.26.20
-##determine correlation b/w relative emergence and crop area harvested
+## This script is used to recreate Figure 2
+## please contact ebellis@astate.edu with any questions!
 
 library(ggdendro)
 library(dplyr)
@@ -10,11 +10,11 @@ library(cowplot)
 setwd('/Users/emilywork/Documents/GitHub/StrigaMacroecologyMS')
 
 ################  load gps points for experimental studies
-meta <- read.csv('SI.dat.1.30.20.csv')
+meta <- read.csv('DataFiles/SI.dat.1.30.20.csv')
 meta <- subset(meta, emergence != "NA") # 27 localities
 
 ############## fig for relative emergence. 
-tmp <- meta %>% select(locality, emergence, host) %>% group_by(locality, host) %>% summarize(emg = mean(emergence))
+tmp <- meta %>% dplyr::select(locality, emergence, host) %>% group_by(locality, host) %>% summarize(emg = mean(emergence))
 tmp2 <- tmp %>% group_by(locality) %>% summarize(total=sum(emg))
 tmp3 <- inner_join(tmp, tmp2)
 
@@ -31,6 +31,6 @@ hc <- hclust(dd, method="complete")
 
 q <- ggdendrogram(hc,  labels=F) + geom_hline(yintercept=0.5, lty=2) + ylim(c(0,2.2)) + xlim(c(0.5,27)) + theme_dendro()
 
-pdf(file="SpecializationFig.pdf", height=3, width=6.8)
-plot_grid(q, p,labels=c('A','B'), nrow = 2)
+pdf(file="Fig2_Clustering.pdf", width=6, height=3.2)
+plot_grid(q, p,labels=c('A','B'), nrow = 2, rel_heights = c(1,2))
 dev.off()
