@@ -1,4 +1,4 @@
-##Updated 6.29.20
+##Updated 8.13.20
 ##Crop Harvested as metric for specialization
 
 library(raster)
@@ -14,9 +14,13 @@ library(lme4)
 library(pals)
 library(rgeos)
 library(aplot)
+library(lmerTest)
+#require(lmerTest)
 
 ##Geotiffs are available through earthstat http://www.earthstat.org/harvested-area-yield-175-crops/
 ##Download for sorghum, millet, and maize
+
+##setwd("~/path.to.geotiffs/)
 
 ### read in the production maps from earthstat
 sorg <- raster('sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')
@@ -35,23 +39,23 @@ maiz.yld <- raster('maize_HarvAreaYield_Geotiff/maize_YieldPerHectare.tif')
 ##total harvested area for focal hosts
 all.harv <- maiz + mill + sorg
 
-##relative harvested area for forcal hosts
+##relative harvested area for focal hosts
 maiz.harv.r <- (maiz/all.harv)
 mill.harv.r <- (mill/all.harv)
 sorg.harv.r <- (sorg/all.harv)
 
-ENM.all <- read.csv("~/StrigaMacroecologyMS/DataFiles/New.Stand.1.6.20.csv")
-Crop.Harvest <-ENM.all
+#setwd("~/path.to.file.download/")
 
-Crop.Harvest$ENM_a_m50km <-NULL
-Crop.Harvest$ENM_a_s50km <-NULL
-Crop.Harvest$ENM_a_z50km <- NULL
+##Dataframe with emergence from empircal studies and constructed 50km resolution ENMs
+SI.dat <- read.csv("StrigaMacroecologyMS-master/DataFiles/SI.dat.1.30.20.csv")
 
-##Convert coordinates for loop
-##had to flip lon/lat, was plotting backwards
-ram <- cbind.data.frame(Crop.Harvest$lat, Crop.Harvest$lon)
-colnames(ram) <-c("Lat","Lon")
-coordinates(ram) <- ~Lat + Lon
+##remove ENM columns
+Crop.Harvest <- SI.dat[ , !grepl( "ENM" , names(SI.dat) ) ]
+
+##Convert coordinates of Striga provenances for loop
+ram <- cbind.data.frame(Crop.Harvest$lon, Crop.Harvest$lat)
+colnames(ram) <-c("Lon","Lat")
+coordinates(ram) <- ~Lon + Lat
 
 ##visulize raster data with striga provenances from emperical studies 
 ##confirm "ram" is plotting correctly
@@ -88,33 +92,27 @@ for (i in 1:nrow(Crop.Harvest)){
   Crop.Harvest$maiz.50km[i] <- mean.50
 }
 
-##Emergence data
-emrg <- read.csv("~~/StrigaMacroecologyMS/DataFiles/New.Stand.1.11.20.csv")
-CH.dat <- merge(emrg, Crop.Harvest, by="locality", all=TRUE)
-
 ##Sorghum
-s.1.ch <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="sorghum",])
-s.2.ch <-lmer(emergence ~ (1 | host.gen) + sorg.50km , data=CH.dat[CH.dat$host=="sorghum",])
+s.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
+s.2.ch <-lmer(emergence ~ (1 | host.gen) + sorg.50km , data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
 
 anova(s.1.ch, s.2.ch, test="Chisqu")
 
 ##Millet
-m.1.ch <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="millet",])
-m.2.ch <-lmer(emergence ~ (1 | host.gen) + mill.50km , data=CH.dat[CH.dat$host=="millet",])
+m.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="millet",])
+m.2.ch <-lmer(emergence ~ (1 | host.gen) + mill.50km , data=Crop.Harvest[Crop.Harvest$host=="millet",])
 
 anova(m.1.ch, m.2.ch, test="Chisqu")
 
 ##Maize
-z.1.ch <-lmer(emergence ~ (1 | host.gen), data=CH.dat[CH.dat$host=="maize",])
-z.2.ch <-lmer(emergence ~ (1 | host.gen) + maiz.50km , data=CH.dat[CH.dat$host=="maize",])
+z.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="maize",])
+z.2.ch <-lmer(emergence ~ (1 | host.gen) + maiz.50km , data=Crop.Harvest[Crop.Harvest$host=="maize",])
 
 anova(z.1.ch, z.2.ch, test="Chisqu")
 
 ##approximated coefficents of linear models using Satterwaithes method for crop harvest
-##note:: If the error code "[,5] out of bounds"appears, re-run models with "lmerTest" which 
+##note:: If the error code "[,5] out of bounds"appears, re-run above models with "lmerTest" which 
 #includes approximates more model parameters (including p-values) than "lme4"
-
-require(lmerTest)
 
 ##Sorghum
 #extract coefficients
@@ -141,5 +139,8 @@ coef.z.ch$p.z <- 2 * (1 - pnorm(abs(coef.z.ch$t.value)))
 coef.z.ch$df.Satt <- coef(summary(z.2.ch))[, 3]
 coef.z.ch$p.Satt <- coef(summary(z.2.ch))[, 5]
 coef.z.ch
+
+
+
 
 
