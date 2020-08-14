@@ -12,7 +12,7 @@ SI.dat$X <-NULL
 occ <- read_csv("Occurance_Data_5.11.20.csv")
 
 occ.all <- left_join(SI.dat, occ, by="locality")
-na.omit(occ.all)
+occ.all <- na.omit(occ.all)
 
 ##Sorghum
 s.1.occ <-lmer(emergence~ (1 | host.gen), data=occ.all[occ.all$host=="sorghum",])
@@ -34,8 +34,3 @@ z.2.occ <-lmer(emergence ~ (1 | host.gen) + maiz.p , data=occ.all[occ.all$host==
 
 anova(z.1.occ, z.2.occ, test="Chisqu")
 
-#plot(emergence, maiz.p, data=occ.all[occ.all$host=="maize",])
-#plot(ranef(s.2))
-#plot(ranef(s.1))
-#plot(s.1)
-#plot(s.2)
