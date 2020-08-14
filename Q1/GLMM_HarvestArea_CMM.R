@@ -20,7 +20,7 @@ library(lmerTest)
 ##Geotiffs are available through earthstat http://www.earthstat.org/harvested-area-yield-175-crops/
 ##Download for sorghum, millet, and maize
 
-##setwd("~/path.to.geotiffs/)
+##setwd("~/path.to.geotiffs/")
 
 ### read in the production maps from earthstat
 sorg <- raster('sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')
