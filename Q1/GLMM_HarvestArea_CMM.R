@@ -15,7 +15,8 @@ library(pals)
 library(rgeos)
 library(aplot)
 
-#setwd('~/Desktop/Research/Lasky/StrigaMacroecology/ModelWD/GeoTiff/')
+##Geotiffs are available through earthstat http://www.earthstat.org/harvested-area-yield-175-crops/
+##Download for sorghum, millet, and maize
 
 ### read in the production maps from earthstat
 sorg <- raster('sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')
@@ -39,7 +40,7 @@ maiz.harv.r <- (maiz/all.harv)
 mill.harv.r <- (mill/all.harv)
 sorg.harv.r <- (sorg/all.harv)
 
-ENM.all <- read.csv("~/Desktop/Research/Lasky/StrigaMacroecology/ModelWD/New.Stand.1.6.20.csv")
+ENM.all <- read.csv("~/StrigaMacroecologyMS/DataFiles/New.Stand.1.6.20.csv")
 Crop.Harvest <-ENM.all
 
 Crop.Harvest$ENM_a_m50km <-NULL
@@ -88,7 +89,7 @@ for (i in 1:nrow(Crop.Harvest)){
 }
 
 ##Emergence data
-emrg <- read.csv("~/Desktop/Research/Lasky/StrigaMacroecology/ModelWD/New.Stand.1.11.20.csv")
+emrg <- read.csv("~~/StrigaMacroecologyMS/DataFiles/New.Stand.1.11.20.csv")
 CH.dat <- merge(emrg, Crop.Harvest, by="locality", all=TRUE)
 
 ##Sorghum
