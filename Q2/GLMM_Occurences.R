@@ -17,6 +17,7 @@ occ.all <- na.omit(occ.all)
 
 ##Sorghum
 s.1.occ <-lmer(emergence~ (1 | host.gen), data=occ.all[occ.all$host=="sorghum",])
+##Herbarium occurences as fixed effect 
 s.2.occ <-lmer(emergence ~ (1 | host.gen) + sorg.p , data=occ.all[occ.all$host=="sorghum",])
 
 anova(s.1.occ, s.2.occ, test="Chisqu")
@@ -25,15 +26,14 @@ anova(s.1.occ, s.2.occ, test="Chisqu")
 
 ##Millet
 m.1.occ <-lmer(emergence~ (1 | host.gen), data=occ.all[occ.all$host=="millet",])
+##Herbarium occurences as fixed effect 
 m.2.occ <-lmer(emergence ~ (1 | host.gen) + mil.p , data=occ.all[occ.all$host=="millet",])
 
 anova(m.1.occ, m.2.occ, test="Chisqu")
 
 ##Maize
 z.1.occ <-lmer(emergence ~ (1 | host.gen), data=occ.all[occ.all$host=="maize",])
+##Herbarium occurences as fixed effect 
 z.2.occ <-lmer(emergence ~ (1 | host.gen) + maiz.p , data=occ.all[occ.all$host=="maize",])
 
 anova(z.1.occ, z.2.occ, test="Chisqu")
-
-
-
