@@ -13,18 +13,21 @@ SI.dat <- read.csv("StrigaMacroecologyMS-master/DataFiles/SI.dat.1.30.20.csv")
 
 ##Sorghum model
 s.1.enm <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="sorghum",])
+##ENM as fixed effect 
 s.2.enm <-lmer(emergence ~ (1 | host.gen) + ENM_a_s50km, data=SI.dat[SI.dat$host=="sorghum",])
 
 anova(s.1.enm, s.2.enm, test="Chisqu")
 
 ##Millet model
 m.1.enm <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="millet",])
+##ENM as fixed effect 
 m.2.enm <-lmer(emergence ~ (1 | host.gen) + ENM_a_m50km, data=SI.dat[SI.dat$host=="millet",])
 
 anova(m.1.enm, m.2.enm, test="Chisqu")
 
 ##Maize model
 z.1.enm <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="maize",])
+##ENM as fixed effect 
 z.2.enm <-lmer(emergence ~ (1 | host.gen) + ENM_a_z50km, data=SI.dat[SI.dat$host=="maize",])
 
 anova(z.1.enm, z.2.enm, test="Chisqu")
@@ -44,12 +47,9 @@ anova(z.1.enm, z.2.Menm, test=("Chisq"))
 
 ##Sorghum
 #extract coefficients
-coef.s <- data.frame(coef(summary(s.2.enm)))
-#use normal distribution to approximate p-value
-coef.s$p.z <- 2 * (1 - pnorm(abs(coef.s$t.value)))
-#get Satterthwaite-approximated degrees of freedom
-coef.s$df.Satt <- coef(summary(s.2.enm))[, 3]
-# get approximate p-values for model
+coef.s <- data.frame(coef(summary(s.2.enm))) #use normal distribution to approximate p-value
+coef.s$p.z <- 2 * (1 - pnorm(abs(coef.s$t.value))) #get Satterthwaite-approximated degrees of freedom
+coef.s$df.Satt <- coef(summary(s.2.enm))[, 3] # get approximate p-values for model
 coef.s$p.Satt <- coef(summary(s.2.enm))[, 5]
 coef.s
 
