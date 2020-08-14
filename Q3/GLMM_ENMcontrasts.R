@@ -38,7 +38,7 @@ anova(z.1.enm, z.2.Senm, test=("Chisq"))
 z.2.Menm <- lmer(emergence ~ (1 | host.gen) + ENM_a_m50km, data=SI.dat[SI.dat$host=="maize",])
 anova(z.1.enm, z.2.Menm, test=("Chisq"))
 
-##approximated coefficents of linear models using Satterwaithes method for crop harvest
+##approximated coefficents of linear models using Satterwaithes method for ENMs
 ##note:: If the error code "[,5] out of bounds"appears, re-run the above models with "lmerTest" which 
 #includes more columns (approximate model parameters e.g. p-values) than "lme4"
 
