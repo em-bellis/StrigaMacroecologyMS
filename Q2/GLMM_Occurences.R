@@ -1,16 +1,17 @@
-##Updated 5.20.20
+##Updated 8.13.20
 ###Herbarium occurence data as metric of specialization
 library(lme4)
 library(readr)
 library(dplyr)
 
-#setwd("~/Desktop/Research/Lasky/StrigaMacroecology/ModelWD")
+#setwd("~/path.to.file.download/")
 
-SI.dat <- read.csv("SI.dat.master.csv")
-SI.dat$X <-NULL
+##Emergence Data
+SI.dat <- read.csv("StrigaMacroecologyMS-master/DataFiles/SI.dat.1.30.20.csv")
 ##Occurence Data 
-occ <- read_csv("Occurance_Data_5.11.20.csv")
+occ <- read.csv("StrigaMacroecologyMS-master/DataFiles/OccurrenceData.5.11.20.csv")
 
+##Combining all Striga provenaces that overlap with Striga herbarium occurences 
 occ.all <- left_join(SI.dat, occ, by="locality")
 occ.all <- na.omit(occ.all)
 
@@ -33,4 +34,6 @@ z.1.occ <-lmer(emergence ~ (1 | host.gen), data=occ.all[occ.all$host=="maize",])
 z.2.occ <-lmer(emergence ~ (1 | host.gen) + maiz.p , data=occ.all[occ.all$host=="maize",])
 
 anova(z.1.occ, z.2.occ, test="Chisqu")
+
+
 
