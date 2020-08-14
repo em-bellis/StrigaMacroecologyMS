@@ -62,14 +62,15 @@ coordinates(ram) <- ~Lon + Lat
 plot(mill)
 points(ram)
 
+##Extracting Crop Harvest Data and binding it to Crop.Harvest dataframe
 ##sorghum loop
 for (i in 1:nrow(Crop.Harvest)){
   x <- circles(ram[i], d=50000, lonlat=T) #sample within radius of 50km
-  pol <- polygons(x)
-  m.50 <- mask(sorg.harv.r, pol)
+  pol <- polygons(x) #polygon
+  m.50 <- mask(sorg.harv.r, pol) #polygon in relative crop space
   mean.50 <- cellStats(m.50, 'mean', na.rm=T)
-  mean.50
-  Crop.Harvest$sorg.50km[i] <- mean.50
+  mean.50 #mean crop harvested in 50km radius polygon
+  Crop.Harvest$sorg.50km[i] <- mean.50 #bind to data frame
 }
 
 ##millet loop
@@ -92,20 +93,24 @@ for (i in 1:nrow(Crop.Harvest)){
   Crop.Harvest$maiz.50km[i] <- mean.50
 }
 
+##GLMM 
 ##Sorghum
 s.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
+##crop harvest as fixed effect 
 s.2.ch <-lmer(emergence ~ (1 | host.gen) + sorg.50km , data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
 
 anova(s.1.ch, s.2.ch, test="Chisqu")
 
 ##Millet
 m.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="millet",])
+##crop harvest as fixed effect 
 m.2.ch <-lmer(emergence ~ (1 | host.gen) + mill.50km , data=Crop.Harvest[Crop.Harvest$host=="millet",])
 
 anova(m.1.ch, m.2.ch, test="Chisqu")
 
 ##Maize
 z.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="maize",])
+##crop harvest as fixed effect 
 z.2.ch <-lmer(emergence ~ (1 | host.gen) + maiz.50km , data=Crop.Harvest[Crop.Harvest$host=="maize",])
 
 anova(z.1.ch, z.2.ch, test="Chisqu")
@@ -116,12 +121,9 @@ anova(z.1.ch, z.2.ch, test="Chisqu")
 
 ##Sorghum
 #extract coefficients
-coef.s.ch <- data.frame(coef(summary(s.2.ch)))
-#use normal distribution to approximate p-value
-coef.s.ch$p.z <- 2 * (1 - pnorm(abs(coef.s.ch$t.value)))
-#get Satterthwaite-approximated degrees of freedom
-coef.s$df.Satt <- coef(summary(s.2.ch))[, 3]
-# get approximate p-values for a model
+coef.s.ch <- data.frame(coef(summary(s.2.ch))) #use normal distribution to approximate p-value
+coef.s.ch$p.z <- 2 * (1 - pnorm(abs(coef.s.ch$t.value))) #get Satterthwaite-approximated degrees of freedom
+coef.s$df.Satt <- coef(summary(s.2.ch))[, 3] # get approximate p-values for a model
 coef.s.ch$p.Satt <- coef(summary(s.2.ch))[, 5]
 coef.s.ch
 
@@ -139,8 +141,3 @@ coef.z.ch$p.z <- 2 * (1 - pnorm(abs(coef.z.ch$t.value)))
 coef.z.ch$df.Satt <- coef(summary(z.2.ch))[, 3]
 coef.z.ch$p.Satt <- coef(summary(z.2.ch))[, 5]
 coef.z.ch
-
-
-
-
-
