@@ -1,3 +1,5 @@
+## used to generate dataframe of mean of habitat suitability within radius of X km
+
 library(rgdal)
 library(dplyr)
 library(raster)

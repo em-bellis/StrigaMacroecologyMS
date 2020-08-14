@@ -1,5 +1,5 @@
-#updated 1.28.20
-#this script is to make a figure of the 4 ENMs of habitat suitability
+# Figure S1
+# this script is to make a figure of the ENMs of habitat suitability
 
 library(raster)
 library(viridis)

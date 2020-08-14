@@ -1,9 +1,9 @@
-###### supplemental fig radius of specialization  
+###### supplemental Fig. S2, radius of specialization  
 library(ggplot2)
 library(tidyr)
 library(dplyr)
 
-df <- read.csv('SI.dat.3.31.20.csv', header=T)
+df <- read.csv('DataFiles/SI.dat.3.31.20.csv', header=T)
 df <- df %>% select(locality, ENM_avz, ENM_avm, ENM_avs, radius) %>% unique() %>% group_by(locality, radius) %>% pivot_longer(c(ENM_avz, ENM_avm, ENM_avs))
 df <- as.data.frame(df)
 colnames(df)[3] <- "ENM"
