@@ -1,5 +1,5 @@
 # StrigaMacroecologyMS
-This repository contains R code necessary to recreate analyses and figures presented in Bellis *et al.* (submitted). *Macroecology of host specialization in a parasitic plant*. The manuscript addresses three research questions:
+This repository contains R code necessary to recreate analyses and figures presented in Bellis, McGlaughlin, dePamphilis, & Lasky (submitted). *Macroecology of host specialization in a parasitic plant*. The manuscript addresses three research questions:
 
 Q1. Does regional abundance of a host crop lead to local specialization by parasites?  
 
