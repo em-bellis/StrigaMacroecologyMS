@@ -1,5 +1,5 @@
-#updated 3.9.20
-#this script is to determine how much habitat suitability changes for future predictions
+# this script is to determine how much habitat suitability changes for future predictions
+## please contact ebellis@astate.edu with any questions
 
 library(raster)
 library(viridis)
