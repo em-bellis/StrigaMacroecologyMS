@@ -11,6 +11,7 @@ library(lmerTest)
 ##Dataframe with emergence from empircal studies and constructed 50km resolution ENMs
 SI.dat <- read.csv("StrigaMacroecologyMS-master/DataFiles/SI.dat.1.30.20.csv")
 
+##GLMM
 ##Sorghum model
 s.1.enm <-lmer(emergence ~ (1 | host.gen), data=SI.dat[SI.dat$host=="sorghum",])
 ##ENM as fixed effect 
