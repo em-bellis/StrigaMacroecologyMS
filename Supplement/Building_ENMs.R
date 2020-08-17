@@ -42,7 +42,6 @@ shgeo <- read.csv('/Users/emilywork/Downloads/pnas.1908707117.sd03.csv', header=
 coordinates(shgeo) <- ~lon + lat
 x <- circles(shgeo, d=500000, lonlat=TRUE)
 pol <- polygons(x)
-env1 <- raster('~/data/env/CHELSA/CHELSA_bio10_12.tif', header=T)
 samp1 <- spsample(pol, 10000, type='random', iter=25)
 cells <- cellFromXY(env1, samp1)
 xy <- xyFromCell(env1, cells)
