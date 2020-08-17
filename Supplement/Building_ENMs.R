@@ -40,10 +40,6 @@ env <- stack(env1, env2, env3, env4, env5, env6.rs, env7.rs, env8.rs)
 ################# generate background points; following https://rspatial.org/raster/sdm/3_sdm_absence-background.html  
 shgeo <- read.csv('/Users/emilywork/Downloads/pnas.1908707117.sd03.csv', header=T) # supplement from https://doi.org/10.1073/pnas.1908707117 
 coordinates(shgeo) <- ~lon + lat
-r <- raster(shgeo)
-res(r) <- 0.01
-r <- extend(r, extent(r)+1)
-acsel <- gridSample(shgeo, r, n=1) #1048 samples further than 1 km
 x <- circles(shgeo, d=500000, lonlat=TRUE)
 pol <- polygons(x)
 env1 <- raster('~/data/env/CHELSA/CHELSA_bio10_12.tif', header=T)
