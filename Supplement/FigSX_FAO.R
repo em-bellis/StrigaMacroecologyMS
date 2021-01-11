@@ -32,7 +32,7 @@ sud_p <- ggplot(sud, aes(x=Year, y=value*100, group=id, col=name, lty=Area)) + g
   # annotate("text", x=1969, y=80, label="Ram83", size=3.5, col="grey40") +
   # annotate("text", x=1992, y=60, label="Beb86", size=3.5, col="grey40") +
   ylim(c(0,100)) +
-  ggtitle("Sudan & South Sudan") +
+  ggtitle("Sudan, \nSouth Sudan") +
   theme(legend.position = "none")
 
 ### a figure of Nigeria 
@@ -164,5 +164,5 @@ ken_p <- ggplot(ken, aes(x=Year, y=value*100, col=name)) + geom_line(size=1.25) 
   theme(legend.position = "none")
 
 pdf(file="FigS1_FAO.pdf", width=7.5, height=7.5)
-  wrap_plots(sen_p, mal_p, gha_p, ngr_p, nig_p, cam_p, sud_p, eth_p, ken_p)
+  wrap_plots(sen_p, mal_p, bf_p, gha_p, ngr_p, nig_p, cam_p, sud_p, eth_p, ken_p)
 dev.off()
