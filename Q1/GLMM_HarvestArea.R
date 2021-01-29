@@ -99,49 +99,54 @@ for (i in 1:nrow(Crop.Harvest)){
   Crop.Harvest$maiz.50km[i] <- mean.50
 }
 
+##Create "region" column 
+Crop.Harvest$region <- with(Crop.Harvest,
+                       ifelse(lon >= 15 , "EAST" , ifelse( lon< 0, "WEST", "CENTRAL"))
+)
+
 ####GLMM####
 ##Sorghum##
-s.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
+s.1.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
 ##QQplot
 qqnorm(resid(s.1.ch), main = "Sorghum")
 qqline(resid(s.1.ch))
 
 ##crop harvest as fixed effect 
-s.2.ch <-lmer(emergence ~ (1 | host.gen) + sorg.50km , data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
+s.2.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region) + sorg.50km , data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
 ##QQplot
 qqnorm(resid(s.2.ch), main = "Sorghum + Crop Harvest")
 qqline(resid(s.2.ch))
 
-anova(s.1.ch, s.2.ch, test="Chisqu") #P-value 0.03109 *
+anova(s.1.ch, s.2.ch, test="Chisqu") #P-value 0.04522 *
 
 ##Millet##
-m.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="millet",])
+m.1.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="millet",])
 
 ##QQplot
 qqnorm(resid(m.1.ch), main = "Millet")
 qqline(resid(m.1.ch))
 
 ##crop harvest as fixed effect 
-m.2.ch <-lmer(emergence ~ (1 | host.gen) + mill.50km , data=Crop.Harvest[Crop.Harvest$host=="millet",])
+m.2.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region) + mill.50km , data=Crop.Harvest[Crop.Harvest$host=="millet",])
 ##QQplot
 qqnorm(resid(m.2.ch), main = "Millet + Crop Harvest")
 qqline(resid(m.2.ch))
 
-anova(m.1.ch, m.2.ch, test="Chisqu") #P-value 3.884e-07 ***
+anova(m.1.ch, m.2.ch, test="Chisqu") #P-value 1.228e-08 ***
 
 ##Maize##
-z.1.ch <-lmer(emergence ~ (1 | host.gen), data=Crop.Harvest[Crop.Harvest$host=="maize",])
+z.1.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="maize",])
 ##QQplot
 qqnorm(resid(z.1.ch), main = "Maize")
 qqline(resid(z.1.ch))
 
 ##crop harvest as fixed effect 
-z.2.ch <-lmer(emergence ~ (1 | host.gen) + maiz.50km , data=Crop.Harvest[Crop.Harvest$host=="maize",])
+z.2.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region) + maiz.50km , data=Crop.Harvest[Crop.Harvest$host=="maize",])
 ##QQplot
 qqnorm(resid(z.2.ch), main = "Maize + Crop Harvest")
 qqline(resid(z.2.ch))
 
-anova(z.1.ch, z.2.ch, test="Chisqu") #P-value 0.02004 *
+anova(z.1.ch, z.2.ch, test="Chisqu") #P-value  0.03737 *
 
 ##approximated coefficents of linear models using Satterwaithes method for crop harvest
 ##note:: If the error code "[,5] out of bounds" appears, re-run above models with "lmerTest" which approximates more model parameters (including p-values) than "lme4"
@@ -198,7 +203,7 @@ c.s <-ggplot(new, aes(x=Crop.Harvest, y=emergence, fill=host, col=host)) +
   xlab("") + ylab("Mean Relative Emergence")  +
   ylim(c(0,1)) + xlim(0,1) +
   geom_jitter(data=subset(new,host=="sorghum"), alpha=0.55, pch=21, size=2, width = 0.1, height = 0.1) +
-  geom_abline(aes(intercept=0.41061,slope=0.25071), color='sienna3',lwd=1.3) + #sorghum
+  geom_abline(aes(intercept=0.4529,slope=0.2171), color='sienna3',lwd=1.3) + #sorghum
   theme_minimal()+
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
@@ -211,7 +216,7 @@ c.m <-ggplot(new, aes(x=Crop.Harvest, y=emergence, fill=host, col=host)) +
   xlab("Relative Crop Area Harvested") + ylab("")  +
   ylim(c(0,1)) + xlim(0,1) +
   geom_jitter(data=subset(new,host=="millet"), alpha=0.55, pch=21, size=2, width = 0.1, height = 0.1) +
-  geom_abline(aes(intercept=0.01575,slope=0.84720), color='plum',lwd=1.3) + #millet
+  geom_abline(aes(intercept=-0.1425 ,slope=1.0197), color='plum',lwd=1.3) + #millet
   theme_minimal()+
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
@@ -224,7 +229,7 @@ c.z <-ggplot(new, aes(x=Crop.Harvest, y=emergence, fill=host, col=host)) +
   xlab("") + ylab("")  +
   ylim(c(0,1)) + xlim(0,1) +
   geom_jitter(data=subset(new,host=="maize"), alpha=0.55, pch=21, size=2, width = 0.1, height = 0.1) +
-  geom_abline(aes(intercept=0.38379,slope=0.25254), color='gold2',lwd=1.3) + #maize
+  geom_abline(aes(intercept= 0.4070 ,slope=0.2263), color='gold2',lwd=1.3) + #maize
   theme_minimal()+
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
@@ -237,9 +242,9 @@ c.all <- ggplot(new, aes(x=Crop.Harvest, y=emergence, fill=host, col=host)) +
   geom_point(alpha=0.5, pch=21, size=2) + 
   xlab("Relative Crop Area Harvested") + ylab("Mean Relative Emergence") + 
   ylim(c(0,1)) + xlim(0,1) +
-  geom_abline(aes(intercept=0.01575,slope=0.84720), color='plum',lwd=1.3) + #millet
-  geom_abline(aes(intercept=0.41061,slope=0.25071), color='sienna3',lwd=1.3) + #sorghum
-  geom_abline(aes(intercept=0.38379,slope=0.25254), color='gold2',lwd=1.3) + #maize
+  geom_abline(aes(intercept=0.4529,slope=0.2171), color='sienna3',lwd=1.3) + #sorghum
+  geom_abline(aes(intercept=-0.1425 ,slope=1.0197), color='plum',lwd=1.3) + #millet
+  geom_abline(aes(intercept= 0.4070 ,slope=0.2263), color='gold2',lwd=1.3) + #maize
   theme_minimal()+
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
@@ -250,3 +255,41 @@ c.all <- ggplot(new, aes(x=Crop.Harvest, y=emergence, fill=host, col=host)) +
 #Figure compiled
 fig.ch <-plot_grid(c.s,c.m,c.z, align="v", axis="r", labels=c('A','B', 'C'), cols=3)+
   theme(plot.background = element_rect(color = "black"))
+
+
+####Moran's I for Spatial autocorrelaiton####
+library(geoMap)
+library("ape")
+
+#Sorghum
+Resid.sorg <- Specificity.sorg[!is.na(Specificity.sorg$host.gen), ]
+Resid.sorg$residuals <- residuals(s.2.ch ) 
+
+dists <- as.matrix(dist(cbind(Resid.sorg$lon, Resid.sorg$lat)))
+dists.inv <- 1/dists 
+diag(dists.inv) <- 0
+dists.inv[is.infinite(dists.inv)] <- 0
+
+Moran.I(Resid.sorg$residuals, dists.inv) #P-value 0.7833189
+
+#Millet
+Resid.mill <- Specificity.mill[!is.na(Specificity.mill$host.gen), ]
+Resid.mill$residuals <- residuals(m.2.ch)
+
+dists <- as.matrix(dist(cbind(Resid.mill$lon, Resid.mill$lat)))
+dists.inv <- 1/dists 
+diag(dists.inv) <- 0
+dists.inv[is.infinite(dists.inv)] <- 0
+
+Moran.I(Resid.mill$residuals, dists.inv) #P-value 0.1517031
+
+#Maize
+Resid.maize <- Specificity.maize[!is.na(Specificity.maize$host.gen), ]
+Resid.maize$residuals <- residuals(z.2.ch)
+
+dists <- as.matrix(dist(cbind(Resid.maize$lon, Resid.maize$lat)))
+dists.inv <- 1/dists 
+diag(dists.inv) <- 0
+dists.inv[is.infinite(dists.inv)] <- 0
+
+Moran.I(Resid.maize$residuals, dists.inv) #P-value 0.4828743
