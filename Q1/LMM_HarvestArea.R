@@ -104,7 +104,7 @@ Crop.Harvest$region <- with(Crop.Harvest,
                        ifelse(lon >= 15 , "EAST" , ifelse( lon< 0, "WEST", "CENTRAL"))
 )
 
-####GLMM####
+####LMMs####
 ##Sorghum##
 s.1.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
 ##QQplot
