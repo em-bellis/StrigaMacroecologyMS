@@ -1,4 +1,4 @@
-###Updated 1.21.21
+##Updated 1.29.21
 ##Crop Harvested as metric for specialization
 
 library(raster)
@@ -22,7 +22,8 @@ library(lmerTest)
 
 #setwd("~/Path.To.GeoTiffs/")
 
-### read in the production maps from earthstat
+##Read in the production maps from earthstat
+
 #Sorghum
 sorg <- raster('sorghum_HarvAreaYield_Geotiff/sorghum_HarvestedAreaHectares.tif')
 sorg.yld <- raster('sorghum_HarvAreaYield_Geotiff/sorghum_YieldPerHectare.tif')
@@ -44,7 +45,7 @@ maiz.yld <- raster('maize_HarvAreaYield_Geotiff/maize_YieldPerHectare.tif')
 ##Total harvested area for focal hosts
 all.harv <- maiz + mill + sorg
 
-##Relative harvested area for focal hosts
+##relative harvested area for focal hosts
 maiz.harv.r <- (maiz/all.harv)
 mill.harv.r <- (mill/all.harv)
 sorg.harv.r <- (sorg/all.harv)
@@ -55,20 +56,20 @@ sorg.harv.r <- (sorg/all.harv)
 SI.dat <- read.csv("StrigaMacroecologyMS-master/DataFiles/SI.dat.1.30.20.csv")
 
 ##remove ENM columns
-Crop.Harvest <- SI.dat[ , !grepl( "ENM" , names(SI.dat) ) ]
+Crop.Harvest <- SI.dat[ , !grepl( "ENM" , names(SI.dat))]
 
 ##Convert coordinates of Striga provenances for loop
 ram <- cbind.data.frame(Crop.Harvest$lon, Crop.Harvest$lat)
 colnames(ram) <-c("Lon","Lat")
 coordinates(ram) <- ~Lon + Lat
 
-##Visulize raster data with striga provenances from emperical studies 
-##Confirm "ram" is plotting correctly
+##visulize raster data with striga provenances from emperical studies 
+##confirm "ram" is plotting correctly
 plot(mill)
 points(ram)
 
 ##Extracting Crop Harvest Data and binding it to Crop.Harvest dataframe
-##This takes awhile
+##This take awhile
 #Sorghum loop
 for (i in 1:nrow(Crop.Harvest)){
   x <- circles(ram[i], d=50000, lonlat=T) #sample within radius of 50km
@@ -101,76 +102,72 @@ for (i in 1:nrow(Crop.Harvest)){
 
 ##Create "region" column 
 Crop.Harvest$region <- with(Crop.Harvest,
-                       ifelse(lon >= 15 , "EAST" , ifelse( lon< 0, "WEST", "CENTRAL"))
+                            ifelse(lon >= 15 , "EAST" , ifelse( lon< 0, "WEST", "CENTRAL"))
 )
+
+
 
 ####LMMs####
 ##Sorghum##
-s.1.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
-##QQplot
-qqnorm(resid(s.1.ch), main = "Sorghum")
-qqline(resid(s.1.ch))
+mod.s1.c <- lmer(emergence ~ (1 | host.gen) + (1 | Study) + ( 1 | region), data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
+qqnorm(resid(mod.s1.c), main = "Sorghum")
+qqline(resid(mod.s1.c))
 
-##crop harvest as fixed effect 
-s.2.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region) + sorg.50km , data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
-##QQplot
-qqnorm(resid(s.2.ch), main = "Sorghum + Crop Harvest")
-qqline(resid(s.2.ch))
-
-anova(s.1.ch, s.2.ch, test="Chisqu") #P-value 0.04522 *
+#Sorghum + crop harvest as fixed effect 
+mod.s2.c <- lmer(emergence ~ (1 | host.gen) + (1 | Study)  + (1 | region) + sorg.50km, data=Crop.Harvest[Crop.Harvest$host=="sorghum",])
+qqnorm(resid(mod.s2.c), main = "Sorghum + Crop Harvest")
+qqline(resid(mod.s2.c))
+       
+S.ch.chi <-anova(mod.s1.c,mod.s2.c, test="Chisq") #P-value 0.04522 *
 
 ##Millet##
-m.1.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="millet",])
+mod.m1.c <- lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="millet",])
+qqnorm(resid(mod.m1.c), main = "Millet")
+qqline(resid(mod.m1.c))
 
-##QQplot
-qqnorm(resid(m.1.ch), main = "Millet")
-qqline(resid(m.1.ch))
+##Millet + crop harvest as fixed effect  
+mod.m2.c <- lmer(emergence ~ (1 | host.gen) + (1 | Study)  + (1 | region)+ mill.50km, data=Crop.Harvest[Crop.Harvest$host=="millet",])
+qqnorm(resid(mod.m2.c), main = "Millet + Crop Harvest")
+qqline(resid(mod.m2.c))
 
-##crop harvest as fixed effect 
-m.2.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region) + mill.50km , data=Crop.Harvest[Crop.Harvest$host=="millet",])
-##QQplot
-qqnorm(resid(m.2.ch), main = "Millet + Crop Harvest")
-qqline(resid(m.2.ch))
-
-anova(m.1.ch, m.2.ch, test="Chisqu") #P-value 1.228e-08 ***
+M.ch.chi<-anova(mod.m1.c,mod.m2.c, test="Chisq") #P-value 1.228e-08 ***
 
 ##Maize##
-z.1.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="maize",])
-##QQplot
-qqnorm(resid(z.1.ch), main = "Maize")
-qqline(resid(z.1.ch))
+mod.z1.c<- lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region), data=Crop.Harvest[Crop.Harvest$host=="maize",])
+qqnorm(resid(mod.z1.c), main = "Maize")
+qqline(resid(mod.z1.c))
 
-##crop harvest as fixed effect 
-z.2.ch <-lmer(emergence ~ (1 | host.gen) + (1 | Study) + (1 | region) + maiz.50km , data=Crop.Harvest[Crop.Harvest$host=="maize",])
-##QQplot
-qqnorm(resid(z.2.ch), main = "Maize + Crop Harvest")
-qqline(resid(z.2.ch))
+##Maize + crop harvest as fixed effect 
+mod.z2.c <- lmer(emergence ~ (1 | host.gen) + (1 | Study)  + (1 | region)+ maiz.50km, data=Crop.Harvest[Crop.Harvest$host=="maize",])
+qqnorm(resid(mod.z2.c), main = "Maize + Crop Harvest")
+qqline(resid(mod.z2.c))
 
-anova(z.1.ch, z.2.ch, test="Chisqu") #P-value  0.03737 *
+Z.ch.chi<-anova(mod.z1.c,mod.z2.c, test="Chisq") #P-value 0.03737 *
+
 
 ##approximated coefficents of linear models using Satterwaithes method for crop harvest
-##note:: If the error code "[,5] out of bounds" appears, re-run above models with "lmerTest" which approximates more model parameters (including p-values) than "lme4"
+##note:: If the error code "[,5] out of bounds"appears, re-run above models with "lmerTest" which includes approximates more model parameters (including p-values) than "lme4"
 
 ##Sorghum##
 #extract coefficients
-coef.s.ch <- data.frame(coef(summary(s.2.ch))) #use normal distribution to approximate p-value
+coef.s.ch <- data.frame(coef(summary(mod.s2.c ))) #use normal distribution to approximate p-value
 coef.s.ch$p.z <- 2 * (1 - pnorm(abs(coef.s.ch$t.value))) #get Satterthwaite-approximated degrees of freedom
-coef.s$df.Satt <- coef(summary(s.2.ch))[, 3] # get approximate p-values for a model
-coef.s.ch$p.Satt <- coef(summary(s.2.ch))[, 5]
+coef.s$df.Satt <- coef(summary(mod.s2.c ))[, 3] # get approximate p-values for a model
+coef.s.ch$p.Satt <- coef(summary(mod.s2.c ))[, 5]
 coef.s.ch
 
 ##Millet##
-coef.m.ch <- data.frame(coef(summary(m.2.ch)))
+coef.m.ch <- data.frame(coef(summary(mod.m2.c )))
 coef.m.ch$p.z <- 2 * (1 - pnorm(abs(coef.m.ch$t.value)))
-coef.m.ch$df.Satt <- coef(summary(m.2.ch))[, 3]
-coef.m.ch$p.Satt <- coef(summary(m.2.ch))[, 5]
+coef.m.ch$df.Satt <- coef(summary(mod.m2.c ))[, 3]
+coef.m.ch$p.Satt <- coef(summary(mod.m2.c ))[, 5]
 coef.m.ch
 
 ##Maize##
-coef.z.ch <- data.frame(coef(summary(z.2.ch)))
+coef.z.ch <- data.frame(coef(summary(mod.z2.c )))
 coef.z.ch$p.z <- 2 * (1 - pnorm(abs(coef.z.ch$t.value)))
-coef.z.ch$df.Satt <- coef(summary(z.2.ch))[, 3]
-coef.z.ch$p.Satt <- coef(summary(z.2.ch))[, 5]
+coef.z.ch$df.Satt <- coef(summary(mod.z2.c ))[, 3]
+coef.z.ch$p.Satt <- coef(summary(mod.z2.c ))[, 5]
 coef.z.ch
 
 
@@ -183,7 +180,7 @@ Specificity.Dat <- left_join(SI.dat, occ, by="locality")
 ##Add crop harvest
 Specificity.Dat <-cbind(Specificity.Dat, Crop.Harvest[,9:11]) #rows 9:11 must be in order sorg.50km, mill.50km, maiz.50km
 
-# subset data and create new object based on column query 
+#Subset data and create new object based on column query 
 Specificity.sorg <- Specificity.Dat[Specificity.Dat$host=="sorghum",]
 Specificity.sorg <- Specificity.sorg[c(-1,-9,-10,-12,-13,-14,-15,-16,-17,-19, -21,-22)]
 colnames(Specificity.sorg) <- c("locality", "emergence","host", "host.gen", "lon", "lat", "ENM", "Study", "Occurrence", "Crop.Harvest")
@@ -256,25 +253,24 @@ c.all <- ggplot(new, aes(x=Crop.Harvest, y=emergence, fill=host, col=host)) +
 fig.ch <-plot_grid(c.s,c.m,c.z, align="v", axis="r", labels=c('A','B', 'C'), cols=3)+
   theme(plot.background = element_rect(color = "black"))
 
-
 ####Moran's I for Spatial autocorrelaiton####
 library(geoMap)
 library("ape")
 
 #Sorghum
 Resid.sorg <- Specificity.sorg[!is.na(Specificity.sorg$host.gen), ]
-Resid.sorg$residuals <- residuals(s.2.ch ) 
+Resid.sorg$residuals <- residuals(mod.s2.c) 
 
 dists <- as.matrix(dist(cbind(Resid.sorg$lon, Resid.sorg$lat)))
 dists.inv <- 1/dists 
 diag(dists.inv) <- 0
 dists.inv[is.infinite(dists.inv)] <- 0
 
-Moran.I(Resid.sorg$residuals, dists.inv) #P-value 0.7833189
+Moran.I(Resid.sorg$residuals, dists.inv) #P-value 0.5725625
 
 #Millet
 Resid.mill <- Specificity.mill[!is.na(Specificity.mill$host.gen), ]
-Resid.mill$residuals <- residuals(m.2.ch)
+Resid.mill$residuals <- residuals(mod.m2.c)
 
 dists <- as.matrix(dist(cbind(Resid.mill$lon, Resid.mill$lat)))
 dists.inv <- 1/dists 
@@ -285,7 +281,7 @@ Moran.I(Resid.mill$residuals, dists.inv) #P-value 0.1517031
 
 #Maize
 Resid.maize <- Specificity.maize[!is.na(Specificity.maize$host.gen), ]
-Resid.maize$residuals <- residuals(z.2.ch)
+Resid.maize$residuals <- residuals(mod.z2.c)
 
 dists <- as.matrix(dist(cbind(Resid.maize$lon, Resid.maize$lat)))
 dists.inv <- 1/dists 
@@ -293,3 +289,4 @@ diag(dists.inv) <- 0
 dists.inv[is.infinite(dists.inv)] <- 0
 
 Moran.I(Resid.maize$residuals, dists.inv) #P-value 0.4828743
+
