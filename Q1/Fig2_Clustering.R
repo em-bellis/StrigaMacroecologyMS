@@ -16,7 +16,7 @@ meta$locality <- factor(meta$locality, levels = c("Bambey", "Maradi", "Mintimbou
 
 ############## fig for relative emergence. 
 p <- ggplot(meta, aes(x=locality, y=emg, fill=host, col=host)) + 
-  geom_boxplot(alpha=0.5, position=position_dodge(width=0.5)) +
+  geom_boxplot(alpha=0.5, position=position_dodge(width=0.5), coef=10, outlier.shape = NA) +
   theme_minimal_vgrid() +
   scale_fill_manual(values=c('gold2','plum','sienna3'), labels=c("maize", "pearl millet","sorghum"), name="Host") +
   scale_color_manual(values=c('gold2','plum','sienna3'), labels=c("maize", "pearl millet","sorghum"), name="Host") +
